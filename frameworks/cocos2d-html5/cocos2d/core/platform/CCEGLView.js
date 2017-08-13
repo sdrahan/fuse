@@ -194,7 +194,7 @@ cc.EGLView = cc.Class.extend(/** @lends cc.view# */{
         } else {
             view = cc.view;
         }
-        if (view._orientationChanging) {
+        if (cc.sys.isMobile && view._orientationChanging) {
             return;
         }
 

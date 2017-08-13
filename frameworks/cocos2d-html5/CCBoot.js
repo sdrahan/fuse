@@ -622,7 +622,11 @@ cc.loader = (function () {
          */
         getXMLHttpRequest: function () {
             var xhr = window.XMLHttpRequest ? new window.XMLHttpRequest() : new ActiveXObject("MSXML2.XMLHTTP");
-            xhr.timeout = 10000;
+            try {
+                xhr.timeout = 10000;
+            }
+            catch (e) {
+            }
             if (xhr.ontimeout === undefined) {
                 xhr._timeoutId = -1;
             }
