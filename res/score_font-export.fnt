@@ -1,0 +1,19 @@
+info face="score_font-export" size=32 bold=0 italic=0 charset="" unicode=0 stretchH=100 smooth=1 aa=1 padding=0,0,0,0 spacing=1,1
+common lineHeight=80 base=26 scaleW=128 scaleH=256 pages=1 packed=0 alphaChnl=1 redChnl=0 greenChnl=0 blueChnl=0
+page id=0 file="score_font-export.png"
+chars count=13
+char id=48 x=41 y=164 width=40 height=60 xoffset=0 yoffset=20 xadvance=41 page=0 chnl=0 letter="0"
+char id=49 x=85 y=0 width=25 height=58 xoffset=0 yoffset=21 xadvance=26 page=0 chnl=0 letter="1"
+char id=50 x=41 y=104 width=40 height=59 xoffset=0 yoffset=20 xadvance=41 page=0 chnl=0 letter="2"
+char id=51 x=0 y=165 width=40 height=60 xoffset=0 yoffset=20 xadvance=41 page=0 chnl=0 letter="3"
+char id=52 x=0 y=45 width=43 height=58 xoffset=0 yoffset=21 xadvance=44 page=0 chnl=0 letter="4"
+char id=53 x=82 y=181 width=38 height=59 xoffset=0 yoffset=21 xadvance=39 page=0 chnl=0 letter="5"
+char id=54 x=82 y=120 width=39 height=60 xoffset=0 yoffset=20 xadvance=40 page=0 chnl=0 letter="6"
+char id=55 x=44 y=0 width=40 height=58 xoffset=0 yoffset=21 xadvance=41 page=0 chnl=0 letter="7"
+char id=56 x=82 y=59 width=39 height=60 xoffset=0 yoffset=20 xadvance=40 page=0 chnl=0 letter="8"
+char id=57 x=0 y=104 width=40 height=60 xoffset=0 yoffset=20 xadvance=41 page=0 chnl=0 letter="9"
+char id=120 x=0 y=0 width=43 height=44 xoffset=0 yoffset=35 xadvance=44 page=0 chnl=0 letter="x"
+char id=32 x=0 y=0 width=0 height=0 xoffset=0 yoffset=0 xadvance=20 page=0 chnl=0 letter=" "
+char id=9 x=0 y=0 width=0 height=0 xoffset=0 yoffset=0 xadvance=160 page=0 chnl=0 letter="	"
+
+kernings count=0

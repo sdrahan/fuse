@@ -1,0 +1,8 @@
+1. Open Shoebox
+2. Right click "Bitmap Font"
+3. Select chars which you want to get in the result
+4. Left click "Bitmap Font"
+5. Open Photoshop, create text field with desired font
+6. Paste text into that text field
+7. Save. Drag result onto "Bitmap Font" button in Shoebox
+8. Adjust path in the *.fnt file

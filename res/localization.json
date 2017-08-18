@@ -1,0 +1,57 @@
+{
+    "en": {
+        "tutorial_goal_header": "Hi! Let's play Drop!",
+        "tutorial_goal": "Combine three or more blocks of the same color.",
+        "tutorial_drop_pc": "Left click to drop the blocks.",
+        "tutorial_drop_mobile": "Swipe down to drop the blocks above.",
+        "tutorial_swipe": "Swipe left and right to move the blocks above.",
+        "tutorial_swap_pc": "Right click to rotate the blocks above.",
+        "tutorial_swap_mobile": "Tap anywhere to rotate the blocks above.",
+        "twitter_share_message": "http://twitter.com/share?text=Check out Drop! It's fun, free and there's no need to install anything.&url=http://cosmobeargames.com/drop&hashtags=puzzle,game",
+        "link_more_games": "http://kongregate.com"
+    },
+    "ru": {
+        "tutorial_goal_header": "Давайте играть в «Drop»!",
+        "tutorial_goal": "Собирайте группы из трёх и больше блоков одного цвета.",
+        "tutorial_drop_pc": "Щелкните мышкой, чтобы бросить на доску блоки сверху.",
+        "tutorial_drop_mobile": "Свайпните вниз, чтобы бросить на доску блоки сверху.",
+        "tutorial_swipe": "Свайпайте влево и вправо, чтобы двигать блоки сверху.",
+        "tutorial_swap_pc": "Щелкните правой кнопкой мышки, чтобы развернуть блоки сверху.",
+        "tutorial_swap_mobile": "Тапните по экрану, чтобы развернуть блоки сверху.",
+        "twitter_share_message": "http://twitter.com/share?text=Сыграйте в Drop! И бесплатно, и не надо ничего устанавливать.&url=http://cosmobeargames.com/drop&hashtags=puzzle,game",
+        "link_more_games": "http://kongregate.com"
+    },
+    "de": {
+        "tutorial_goal_header": "Hi! Lass uns »Drop« spielen!",
+        "tutorial_goal": "Kombiniere drei oder mehr Blöcke derselben Farbe.",
+        "tutorial_drop_pc": "Klicke um die Blöcke fallen zu lassen.",
+        "tutorial_drop_mobile": "Wische nach unten um die Blöcke fallen zu lassen.",
+        "tutorial_swipe": "Wische nach links oder rechts um die oberen Blöcke zu bewegen.",
+        "tutorial_swap_pc": "Rechtsklicke um die oberen Blöcke zu rotieren.",
+        "tutorial_swap_mobile": "Tippe irgendwohin um die oberen Blöcke zu rotieren.",
+        "twitter_share_message": "http://twitter.com/share?text=Probier's mal mit Drop! Ein kostenloses Puzzle-Spiel.&url=http://cosmobeargames.com/drop&hashtags=puzzle,game",
+        "link_more_games": "http://kongregate.com"
+    },
+    "pt": {
+        "tutorial_goal_header": "Olá! Vamos jogar «Drop»!",
+        "tutorial_goal": "Combina três ou mais blocos da mesma cor.",
+        "tutorial_drop_pc": "Clica para deixar cair os blocos.",
+        "tutorial_drop_mobile": "Desliza para baixo para deixar cair os blocos.",
+        "tutorial_swipe": "Desliza para a esquerda e direita para mover os blocos.",
+        "tutorial_swap_pc": "Clica no botão direito para rodar os blocos.",
+        "tutorial_swap_mobile": "Toca em qualquer lugar para rodar os blocos.",
+        "twitter_share_message": "http://twitter.com/share?text=Espreita o Drop, um jogo de puzzles!&url=http://cosmobeargames.com/drop&hashtags=puzzle,game",
+        "link_more_games": "http://kongregate.com"
+    },
+    "uk": {
+        "tutorial_goal_header": "Давайте зіграємо в «Drop»!",
+        "tutorial_goal": "Збирайте групи з трьох і більше блоків одного кольору.",
+        "tutorial_drop_pc": "Клацніть мишкою, щоб зкинути на дошку блоки зверху.",
+        "tutorial_drop_mobile": "Свайпніть донизу, щоб зкинути на дошку блоки зверху.",
+        "tutorial_swipe": "Свайпайте вліво і вправо, щоб двигати блоки зверху.",
+        "tutorial_swap_pc": "Клацніть правою кнопкою мишки, щоб розвернути блоки зверху.",
+        "tutorial_swap_mobile": "Тапніть по екрану, щоб розвернути блоки зверху.",
+        "twitter_share_message": "http://twitter.com/share?text=Зіграйте в Drop! І безкоштовно, і не треба нічого встановлювати.&url=http://cosmobeargames.com/drop&hashtags=puzzle,game",
+        "link_more_games": "http://kongregate.com"
+    }
+}
