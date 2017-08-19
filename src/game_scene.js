@@ -14,7 +14,7 @@ var GameScene = cc.Scene.extend({
     },
 
     startBoard: function () {
-        this.gamefield = new lowfat.Gamefield(this, lowfat.SpriteFactory, this.gameStateModel, lowfat.SoundManager(), cc.director.getWinSize());
+        this.gamefield = new lowfat.Gamefield(this, lowfat.SpriteFactory, this.gameStateModel, this.soundManager, cc.director.getWinSize());
         this.gamefield.start();
     },
 

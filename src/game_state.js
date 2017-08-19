@@ -87,8 +87,8 @@ lowfat.GameStateModel = function (soundManager) {
             pack = gameStateVO.pack;
             nextPack = gameStateVO.nextPack;
             boardState = gameStateVO.boardState;
-            soundManager.isSoundOn = gameStateVO.isSoundOn === undefined ? true : gameStateVO.isSoundOn;
-            soundManager.isMusicOn = gameStateVO.isMusicOn === undefined ? true : gameStateVO.isMusicOn;
+            soundManager.setSoundOn(gameStateVO.isSoundOn === undefined ? true : gameStateVO.isSoundOn);
+            soundManager.setMusicOn(gameStateVO.isMusicOn === undefined ? true : gameStateVO.isMusicOn);
         }
     }
 

@@ -13,6 +13,15 @@ var res = {
     sound_swap: "res/swap.mp3",
     sound_drop: "res/drop.mp3",
     localization_json: "res/localization.json"
+    /*
+    // That's how you load fonts
+    // And then use "OpenSansRegular" as the font name in application
+    font: {
+            type: "font",
+            name: "OpenSansRegular",
+            srcs: ["res/opensans-regular.eot", "res/opensans-regular.ttf"]
+            }
+    */
 };
 
 var g_resources = [];

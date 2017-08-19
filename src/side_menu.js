@@ -1,7 +1,8 @@
 var lowfat = lowfat || {};
 
-lowfat.SideMenu = function (gamefield) {
-    this.gamefield = gamefield;
+lowfat.SideMenu = function (spriteFactory, soundManager, processRestartDuringGame) {
+    this.spriteFactory = spriteFactory;
+    this.soundManager = soundManager;
     this.container = null;
     this.layer = null;
     this.bg = null;
@@ -37,7 +38,7 @@ lowfat.SideMenu = function (gamefield) {
         this.layer = new cc.Node();
         this.container.addChild(this.layer);
 
-        this.bg = lowfat.GameSpriteManager.getSprite("SidemenuBg", 0, 0);
+        this.bg = this.spriteFactory.getSprite("SidemenuBg", 0, 0);
         this.bg.setScale(1, this.WIN_HEIGHT / this.BG_TILE_HEIGHT);
         this.layer.addChild(this.bg);
         this.layer.setPositionX(-this.MENU_WIDTH);
@@ -83,35 +84,35 @@ lowfat.SideMenu = function (gamefield) {
     };
 
     this.onSoundButton = function () {
-        lowfat.SoundManager.toggleSoundOn();
+        this.soundManager.toggleSoundOn();
         this.updateSoundButtons();
     };
 
     this.onMusicButton = function () {
-        lowfat.SoundManager.toggleMusicOn();
+        this.soundManager.toggleMusicOn();
         this.updateMusicButtons();
     };
 
     this.updateSoundButtons = function () {
-        this.soundOnButton.setVisible(lowfat.SoundManager.getSoundOn());
-        this.soundOffButton.setVisible(!lowfat.SoundManager.getSoundOn());
+        this.soundOnButton.setVisible(this.soundManager.getSoundOn());
+        this.soundOffButton.setVisible(!this.soundManager.getSoundOn());
         this.addProperSoundListener();
     };
 
     this.addProperSoundListener = function () {
-        this.soundOnButton.setTouchEnabled(lowfat.SoundManager.getSoundOn());
-        this.soundOffButton.setTouchEnabled(!lowfat.SoundManager.getSoundOn());
+        this.soundOnButton.setTouchEnabled(this.soundManager.getSoundOn());
+        this.soundOffButton.setTouchEnabled(!this.soundManager.getSoundOn());
     };
 
     this.updateMusicButtons = function () {
-        this.musicOnButton.setVisible(lowfat.SoundManager.getMusicOn());
-        this.musicOffButton.setVisible(!lowfat.SoundManager.getMusicOn());
+        this.musicOnButton.setVisible(this.soundManager.getMusicOn());
+        this.musicOffButton.setVisible(!this.soundManager.getMusicOn());
         this.addProperMusicListener();
     };
 
     this.addProperMusicListener = function () {
-        this.musicOnButton.setTouchEnabled(lowfat.SoundManager.getMusicOn());
-        this.musicOffButton.setTouchEnabled(!lowfat.SoundManager.getMusicOn());
+        this.musicOnButton.setTouchEnabled(this.soundManager.getMusicOn());
+        this.musicOffButton.setTouchEnabled(!this.soundManager.getMusicOn());
     };
 
     this.openMenuButtonEvent = function (sender, type) {
@@ -178,8 +179,8 @@ lowfat.SideMenu = function (gamefield) {
 
     this.createButton = function (outSkin, overSkin, x, y, onTriggeredEvent) {
         var button = new ccui.Button();
-        var outSkinTextureName = lowfat.GameSpriteManager.getMCTextureName(outSkin);
-        var overSkinTextureName = lowfat.GameSpriteManager.getMCTextureName(overSkin);
+        var outSkinTextureName = this.spriteFactory.getMCTextureName(outSkin);
+        var overSkinTextureName = this.spriteFactory.getMCTextureName(overSkin);
         button.loadTextures(outSkinTextureName, overSkinTextureName, "", ccui.Widget.PLIST_TEXTURE);
         button.setPosition(x, y);
         button.addTouchEventListener(onTriggeredEvent, this);
@@ -192,7 +193,7 @@ lowfat.SideMenu = function (gamefield) {
         var separatorHeight = 2;
 
         var button = new ccui.Button();
-        var iconFrameName = lowfat.GameSpriteManager.getMCTextureName("SidemenuBtnBg");
+        var iconFrameName = this.spriteFactory.getMCTextureName("SidemenuBtnBg");
         button.loadTextures(iconFrameName, "", "", ccui.Widget.PLIST_TEXTURE);
         button.setZoomScale(0);
         button.setAnchorPoint(0, 0);
@@ -210,7 +211,7 @@ lowfat.SideMenu = function (gamefield) {
         label.setPosition(70, btnHeightExcludingSeparator / 2 + separatorHeight);
         button.addChild(label);
 
-        var icon = lowfat.GameSpriteManager.getSprite(iconSpriteName, 0.5, 0.5);
+        var icon = this.spriteFactory.getSprite(iconSpriteName, 0.5, 0.5);
         icon.setPosition(30, btnHeightExcludingSeparator / 2 + separatorHeight);
         button.addChild(icon);
         this.layer.addChild(button);

@@ -1,13 +1,6 @@
-var lowfat = lowfat || {};
-
-lowfat.IngameUI = function (gamefield, spriteFactory, soundManager, getScoreUI, processNewGame) {
+var IngameUI = function (gamefield) {
     this.gamefield = gamefield;
     this.container = null;
-    this.spriteFactory = spriteFactory;
-    this.soundManager = soundManager;
-
-    this.getScoreUI = getScoreUI;
-    this.processNewGame = processNewGame;
 
     this.soundOnButton = null;
     this.soundOffButton = null;
@@ -47,14 +40,19 @@ lowfat.IngameUI = function (gamefield, spriteFactory, soundManager, getScoreUI, 
         this.socialConnectButton = this.createButton("Btn_MoreGames", "Btn_MoreGames_Over", 0, this.SOCIAL_CONNECT_BTN_Y_HIDDEN, this.socialConnectButtonTouchEvent);
         this.shareTwitterButton = this.createButton("Btn_ShareTwitter", "Btn_ShareTwitter_Over", 0, this.SHARE_TWITTER_BTN_Y_HIDDEN, this.shareTwitterButtonTouchEvent);
 
+        // this.container.addChild(this.retryButton);
+        // this.container.addChild(this.musicOnButton);
+        // this.container.addChild(this.musicOffButton);
+        // this.container.addChild(this.soundOnButton);
+        // this.container.addChild(this.soundOffButton);
         this.updateSoundButtons();
         this.updateMusicButtons();
     };
 
     this.createButton = function (outSkin, overSkin, x, y, onTriggeredEvent) {
         var button = new ccui.Button();
-        var outSkinTextureName = this.spriteFactory.getMCTextureName(outSkin);
-        var overSkinTextureName = this.spriteFactory.getMCTextureName(overSkin);
+        var outSkinTextureName = lowfat.GameSpriteManager.getMCTextureName(outSkin);
+        var overSkinTextureName = lowfat.GameSpriteManager.getMCTextureName(overSkin);
         button.loadTextures(outSkinTextureName, overSkinTextureName, "", ccui.Widget.PLIST_TEXTURE);
         button.setPosition(x, y);
         button.addTouchEventListener(onTriggeredEvent, this);
@@ -103,18 +101,18 @@ lowfat.IngameUI = function (gamefield, spriteFactory, soundManager, getScoreUI, 
     };
 
     this.onSoundButton = function () {
-        this.soundManager.toggleSoundOn();
+        lowfat.SoundManager.toggleSoundOn();
         this.updateSoundButtons();
     };
 
     this.onMusicButton = function () {
-        this.soundManager.toggleMusicOn();
+        lowfat.SoundManager.toggleMusicOn();
         this.updateMusicButtons();
     };
 
     this.onNewGameButton = function () {
         this.hidePostGameButtons();
-        this.getScoreUI().moveToNormalPosition();
+        this.gamefield.scoreUI.moveToNormalPosition();
     };
 
     this.onSocialConnectButton = function () {
@@ -126,25 +124,25 @@ lowfat.IngameUI = function (gamefield, spriteFactory, soundManager, getScoreUI, 
     };
 
     this.updateSoundButtons = function () {
-        this.soundOnButton.setVisible(this.soundManager.getSoundOn());
-        this.soundOffButton.setVisible(!this.soundManager.getSoundOn());
+        this.soundOnButton.setVisible(lowfat.SoundManager.getSoundOn());
+        this.soundOffButton.setVisible(!lowfat.SoundManager.getSoundOn());
         this.addProperSoundListener();
     };
 
     this.addProperSoundListener = function () {
-        this.soundOnButton.setTouchEnabled(this.soundManager.getSoundOn());
-        this.soundOffButton.setTouchEnabled(!this.soundManager.getSoundOn());
+        this.soundOnButton.setTouchEnabled(lowfat.SoundManager.getSoundOn());
+        this.soundOffButton.setTouchEnabled(!lowfat.SoundManager.getSoundOn());
     };
 
     this.updateMusicButtons = function () {
-        this.musicOnButton.setVisible(this.soundManager.getMusicOn());
-        this.musicOffButton.setVisible(!this.soundManager.getMusicOn());
+        this.musicOnButton.setVisible(lowfat.SoundManager.getMusicOn());
+        this.musicOffButton.setVisible(!lowfat.SoundManager.getMusicOn());
         this.addProperMusicListener();
     };
 
     this.addProperMusicListener = function () {
-        this.musicOnButton.setTouchEnabled(this.soundManager.getMusicOn());
-        this.musicOffButton.setTouchEnabled(!this.soundManager.getMusicOn());
+        this.musicOnButton.setTouchEnabled(lowfat.SoundManager.getMusicOn());
+        this.musicOffButton.setTouchEnabled(!lowfat.SoundManager.getMusicOn());
     };
 
     this.setEnabled = function (value) {
@@ -192,9 +190,9 @@ lowfat.IngameUI = function (gamefield, spriteFactory, soundManager, getScoreUI, 
         this.container.addChild(this.socialConnectButton);
         this.container.addChild(this.shareTwitterButton);
 
-        // if (lowfat.socialManager.getLoginButtonShouldBeVisible() == false) {
-        //     this.socialConnectButton.setVisible(false);
-        // }
+        if (lowfat.socialManager.getLoginButtonShouldBeVisible() == false) {
+            this.socialConnectButton.setVisible(false);
+        }
 
         var delayAction = new cc.DelayTime(0.5);
         var moveInAction = new cc.MoveTo(0.7, this.newGameButton.getPositionX(), this.NEW_GAME_BTN_Y_NORMAL).easing(cc.easeBackOut());

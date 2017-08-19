@@ -55,6 +55,10 @@ lowfat.SoundManager = function () {
         return isSoundOn;
     }
 
+    function setSoundOn(value) {
+        isSoundOn = value;
+    }
+
     function toggleMusicOn() {
         isMusicOn = !isMusicOn;
         if (isMusicOn) {
@@ -68,6 +72,10 @@ lowfat.SoundManager = function () {
         return isMusicOn;
     }
 
+    function setMusicOn(value) {
+        isMusicOn = value;
+    }
+
     return {
         playMatchSound: playMatchSound,
         playSwapSound: playSwapSound,
@@ -77,6 +85,8 @@ lowfat.SoundManager = function () {
         toggleSoundOn: toggleSoundOn,
         toggleMusicOn: toggleMusicOn,
         getSoundOn: getSoundOn,
-        getMusicOn: getMusicOn
+        getMusicOn: getMusicOn,
+        setSoundOn: setSoundOn,
+        setMusicOn: setMusicOn
     }
 };

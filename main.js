@@ -40,18 +40,17 @@ cc.game.onStart = function () {
         }
         */
 
-        lowfat.GameStateModel.init();
         lowfat.LocalizationManager.init();
 
         var texture = cc.textureCache.addImage(res.spritesheet_png);
         cc.spriteFrameCache.addSpriteFrames(res.spritesheet_plist, texture);
 
-        var gamefieldScene = new GamefieldScene();
-        gamefieldScene.setup();
-        cc.director.runScene(gamefieldScene);
+        var gameScene = new GameScene();
+        gameScene.setup();
+        cc.director.runScene(gameScene);
 
         cc.view.setResizeCallback(function () {
-            gamefieldScene.onResize();
+            gameScene.onResize();
         });
     }, this);
 };

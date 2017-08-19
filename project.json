@@ -12,11 +12,13 @@
     "modules" : ["cocos2d", "ccui"],
 
     "jsList" : [
-        "src/resource.js",
         "src/common.js",
-        "src/ui.js",
-        "src/particles_config.js",
+        "src/game_scene.js",
+        "src/game_state.js",
         "src/gamefield.js",
-        "src/side_menu.js"
+        "src/resource.js",
+        "src/side_menu.js",
+        "src/sound_manager.js",
+        "src/ui.js"
     ]
 }
