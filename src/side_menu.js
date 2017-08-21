@@ -3,12 +3,12 @@ var lowfat = lowfat || {};
 lowfat.SideMenu = function (spriteFactory, soundManager, processRestartDuringGame) {
     this.spriteFactory = spriteFactory;
     this.soundManager = soundManager;
+    this.processRestartDuringGame = processRestartDuringGame;
     this.container = null;
     this.layer = null;
     this.bg = null;
     this.isOpen = false;
     this.overlay = null;
-    this.screenWidth = 0;
     this.isClosing = false;
 
     this.soundOnButton = null;
@@ -80,7 +80,7 @@ lowfat.SideMenu = function (spriteFactory, soundManager, processRestartDuringGam
     };
 
     this.onRetryButton = function () {
-        this.gamefield.processRestartDuringGame();
+        this.processRestartDuringGame();
     };
 
     this.onSoundButton = function () {
@@ -207,6 +207,7 @@ lowfat.SideMenu = function (spriteFactory, soundManager, processRestartDuringGam
             cc.size(200, btnHeightExcludingSeparator),
             cc.TEXT_ALIGNMENT_LEFT,
             cc.VERTICAL_TEXT_ALIGNMENT_CENTER);
+        label.setFontFillColor(cc.color(123, 32, 163));
         label.setAnchorPoint(0, 0.5);
         label.setPosition(70, btnHeightExcludingSeparator / 2 + separatorHeight);
         button.addChild(label);
@@ -243,6 +244,5 @@ lowfat.SideMenu = function (spriteFactory, soundManager, processRestartDuringGam
 
     this.onResize = function (winSizeWidth) {
         this.overlay.setContentSize(winSizeWidth, 720);
-        this.screenWidth = winSizeWidth;
     };
 };

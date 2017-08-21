@@ -1314,7 +1314,7 @@ lowfat.ScoreUI = function (container) {
         targetScore = 0;
     }
 
-    function onResize (width) {
+    function onResize(width) {
         screenWidth = width;
         highScoreLabel.setPosition(screenWidth - COORDS_NORMAL_HISCORE.x - container.getPositionX(), COORDS_NORMAL_HISCORE.y);
     }
@@ -1393,13 +1393,20 @@ lowfat.FloatingScore = function (container, fgContainer) {
 
 lowfat.HintUI = function (container, spriteFactory) {
     var hintIcons = [];
+    var hintIconsLocked = [];
     var lastUnlockedValue = 0;
 
     function init(maxValue) {
         for (var i = 0; i < maxValue; i++) {
+            var hintIconLocked = spriteFactory.getSprite("BlockMiniLocked", 0.5, 0.5);
+            hintIconLocked.setPosition(66 + (i * 24), 21);
+            hintIconLocked.setVisible(true);
+            container.addChild(hintIconLocked);
+            hintIconsLocked.push(hintIconLocked);
+
             var value = i + 1;
             var hintIcon = spriteFactory.getSprite("BlockMini" + value, 0.5, 0.5);
-            hintIcon.setPosition(23 + (i * 30), 21);
+            hintIcon.setPosition(66 + (i * 24), 21);
             if (i > 0) {
                 hintIcon.setVisible(false);
             }
@@ -1416,6 +1423,7 @@ lowfat.HintUI = function (container, spriteFactory) {
         lastUnlockedValue = maxUnlockedValue;
         for (var i = 0; i < hintIcons.length; i++) {
             hintIcons[i].setVisible(i <= maxUnlockedValue - 1);
+            hintIconsLocked[i].setVisible(i > maxUnlockedValue - 1);
         }
 
         if (showHighlight && maxUnlockedValue > 1) {
@@ -1452,6 +1460,7 @@ lowfat.HintUI = function (container, spriteFactory) {
         var duration = 0.2;
         for (var i = howManyIconsToLeave; i < lastUnlockedValue; i++) {
             var hintIcon = hintIcons[i];
+            hintIconsLocked[i].setVisible(true);
             var delay = maxDelay - (i * (maxDelay / (lastUnlockedValue - 1)));
             if (lastUnlockedValue == 1) {
                 delay = 0;
@@ -1467,12 +1476,40 @@ lowfat.HintUI = function (container, spriteFactory) {
         }
     }
 
-    function onHideFinished(target, howManyIconsToLeave) {
-        var start = (howManyIconsToLeave !== undefined && howManyIconsToLeave > 0) ? howManyIconsToLeave : 0;
+    function slowlyHideLockedIcons() {
+        var maxDelay = 0.5;
+        var duration = 0.2;
+        for (var i = 0; i < hintIconsLocked.length; i++) {
+            var hintIconLocked = hintIconsLocked[i];
+            var delay = (i * (maxDelay / (hintIconsLocked.length - 1)));
+            var waitAction = new cc.DelayTime(delay);
+            var disappearAction = new cc.ScaleTo(duration, 0, 0);
+            if (i < hintIconsLocked.length - 1) {
+                hintIconLocked.runAction(new cc.Sequence(waitAction, disappearAction));
+            } else {
+                var callFuncAction = new cc.CallFunc(onHideLockedFinished);
+                hintIconLocked.runAction(new cc.Sequence(waitAction, disappearAction, callFuncAction));
+            }
+        }
+    }
 
-        for (var i = start; i < hintIcons.length; i++) {
+    function onHideLockedFinished() {
+        for (var i = 0; i < hintIconsLocked.length; i++) {
+            hintIconsLocked[i].setScale(1, 1);
+            hintIconsLocked[i].setVisible(false);
+        }
+    }
+
+    function onHideFinished(target, howManyIconsToLeave) {
+        console.log("howManyIconsToLeave: " + howManyIconsToLeave);
+        var start = (howManyIconsToLeave !== undefined && howManyIconsToLeave > 0) ? howManyIconsToLeave : 0;
+        var i;
+        for (i = start; i < hintIcons.length; i++) {
             hintIcons[i].setScale(1, 1);
             hintIcons[i].setVisible(false);
+        }
+        if (start == 0) {
+            slowlyHideLockedIcons();
         }
     }
 
