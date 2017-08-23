@@ -1,25 +1,15 @@
 var lowfat = lowfat || {};
 
-lowfat.IngameUI = function (spriteFactory, soundManager, getScoreUI, processNewGame, processRestartDuringGame) {
+lowfat.IngameUI = function (spriteFactory, getScoreUI, processNewGame) {
     this.container = null;
     this.spriteFactory = spriteFactory;
-    this.soundManager = soundManager;
 
     this.getScoreUI = getScoreUI;
     this.processNewGame = processNewGame;
 
-    this.soundOnButton = null;
-    this.soundOffButton = null;
-    this.musicOnButton = null;
-    this.musicOffButton = null;
-    this.retryButton = null;
     this.newGameButton = null;
     this.socialConnectButton = null;
     this.shareTwitterButton = null;
-
-    this.RETRY_BTN_COORDS = {x: 40, y: 680};
-    this.MUSIC_BTN_COORDS = {x: 40, y: 680};
-    this.SOUND_BTN_COORDS = {x: 100, y: 680};
 
     this.NEW_GAME_BTN_Y_NORMAL = 190;
     this.NEW_GAME_BTN_Y_HIDDEN = -160;
@@ -37,17 +27,9 @@ lowfat.IngameUI = function (spriteFactory, soundManager, getScoreUI, processNewG
     this.init = function (container) {
         this.container = container;
 
-        this.retryButton = this.createButton("Btn_Restart", "Btn_Restart_Over", this.RETRY_BTN_COORDS.x, this.RETRY_BTN_COORDS.y, this.retryButtonTouchEvent);
-        this.soundOnButton = this.createButton("Btn_Sound_On", "Btn_Sound_On_Over", 0, 0, this.soundButtonTouchEvent);
-        this.soundOffButton = this.createButton("Btn_Sound_Off", "Btn_Sound_Off_Over", 0, 0, this.soundButtonTouchEvent);
-        this.musicOnButton = this.createButton("Btn_Music_On", "Btn_Music_On_Over", 0, 0, this.musicButtonTouchEvent);
-        this.musicOffButton = this.createButton("Btn_Music_Off", "Btn_Music_Off_Over", 0, 0, this.musicButtonTouchEvent);
         this.newGameButton = this.createButton("Btn_NewGame", "Btn_NewGame_Over", 0, this.NEW_GAME_BTN_Y_HIDDEN, this.newGameButtonTouchEvent);
         this.socialConnectButton = this.createButton("Btn_MoreGames", "Btn_MoreGames_Over", 0, this.SOCIAL_CONNECT_BTN_Y_HIDDEN, this.socialConnectButtonTouchEvent);
         this.shareTwitterButton = this.createButton("Btn_ShareTwitter", "Btn_ShareTwitter_Over", 0, this.SHARE_TWITTER_BTN_Y_HIDDEN, this.shareTwitterButtonTouchEvent);
-
-        this.updateSoundButtons();
-        this.updateMusicButtons();
     };
 
     this.createButton = function (outSkin, overSkin, x, y, onTriggeredEvent) {
@@ -59,24 +41,6 @@ lowfat.IngameUI = function (spriteFactory, soundManager, getScoreUI, processNewG
         button.addTouchEventListener(onTriggeredEvent, this);
         lowfat.GraphicUtils.retain(button);
         return button;
-    };
-
-    this.retryButtonTouchEvent = function (sender, type) {
-        if (type == ccui.Widget.TOUCH_ENDED) {
-            this.onRetryButton();
-        }
-    };
-
-    this.soundButtonTouchEvent = function (sender, type) {
-        if (type == ccui.Widget.TOUCH_ENDED) {
-            this.onSoundButton();
-        }
-    };
-
-    this.musicButtonTouchEvent = function (sender, type) {
-        if (type == ccui.Widget.TOUCH_ENDED) {
-            this.onMusicButton();
-        }
     };
 
     this.newGameButtonTouchEvent = function (sender, type) {
@@ -97,20 +61,6 @@ lowfat.IngameUI = function (spriteFactory, soundManager, getScoreUI, processNewG
         }
     };
 
-    this.onRetryButton = function () {
-        this.gamefield.processRestartDuringGame();
-    };
-
-    this.onSoundButton = function () {
-        this.soundManager.toggleSoundOn();
-        this.updateSoundButtons();
-    };
-
-    this.onMusicButton = function () {
-        this.soundManager.toggleMusicOn();
-        this.updateMusicButtons();
-    };
-
     this.onNewGameButton = function () {
         this.hidePostGameButtons();
         this.getScoreUI().moveToNormalPosition();
@@ -124,66 +74,10 @@ lowfat.IngameUI = function (spriteFactory, soundManager, getScoreUI, processNewG
         window.open(lowfat.LocalizationManager.getString("twitter_share_message"), "_blank");
     };
 
-    this.updateSoundButtons = function () {
-        this.soundOnButton.setVisible(this.soundManager.getSoundOn());
-        this.soundOffButton.setVisible(!this.soundManager.getSoundOn());
-        this.addProperSoundListener();
-    };
-
-    this.addProperSoundListener = function () {
-        this.soundOnButton.setTouchEnabled(this.soundManager.getSoundOn());
-        this.soundOffButton.setTouchEnabled(!this.soundManager.getSoundOn());
-    };
-
-    this.updateMusicButtons = function () {
-        this.musicOnButton.setVisible(this.soundManager.getMusicOn());
-        this.musicOffButton.setVisible(!this.soundManager.getMusicOn());
-        this.addProperMusicListener();
-    };
-
-    this.addProperMusicListener = function () {
-        this.musicOnButton.setTouchEnabled(this.soundManager.getMusicOn());
-        this.musicOffButton.setTouchEnabled(!this.soundManager.getMusicOn());
-    };
-
-    this.setEnabled = function (value) {
-        if (value == false) {
-            this.soundOnButton.setTouchEnabled(false);
-            this.soundOffButton.setTouchEnabled(false);
-            this.musicOnButton.setTouchEnabled(false);
-            this.musicOffButton.setTouchEnabled(false);
-            this.retryButton.setTouchEnabled(false);
-        } else {
-            this.retryButton.setTouchEnabled(true);
-            this.addProperMusicListener();
-            this.addProperSoundListener();
-        }
-    };
-
     this.onResize = function (winSizeWidth) {
-        this.soundOnButton.setPosition(winSizeWidth - this.SOUND_BTN_COORDS.x, this.SOUND_BTN_COORDS.y);
-        this.soundOffButton.setPosition(winSizeWidth - this.SOUND_BTN_COORDS.x, this.SOUND_BTN_COORDS.y);
-        this.musicOnButton.setPosition(winSizeWidth - this.MUSIC_BTN_COORDS.x, this.MUSIC_BTN_COORDS.y);
-        this.musicOffButton.setPosition(winSizeWidth - this.MUSIC_BTN_COORDS.x, this.MUSIC_BTN_COORDS.y);
-
         this.newGameButton.setPosition(winSizeWidth / 2, this.newGameButton.getPositionY());
         this.socialConnectButton.setPosition((winSizeWidth / 2) + this.SOCIAL_CONNECT_BTN_X_RELATIVE_TO_CENTER, this.socialConnectButton.getPositionY());
         this.shareTwitterButton.setPosition((winSizeWidth / 2) + this.SHARE_TWITTER_BTN_X_RELATIVE_TO_CENTER, this.shareTwitterButton.getPositionY());
-    };
-
-    this.setRetryButtonVisible = function (value) {
-        this.retryButton.setVisible(value);
-    };
-
-    this.isOnButton = function (eventX, eventY) {
-        if (eventY >= (this.RETRY_BTN_COORDS.y - this.BTN_HALF_SIZE)) {
-            if ((eventX >= this.retryButton.getPositionX() - this.BTN_HALF_SIZE && eventX <= this.retryButton.getPositionX() + this.BTN_HALF_SIZE) ||
-                (eventX >= this.soundOnButton.getPositionX() - this.BTN_HALF_SIZE && eventX <= this.soundOnButton.getPositionX() + this.BTN_HALF_SIZE) ||
-                (eventX >= this.musicOnButton.getPositionX() - this.BTN_HALF_SIZE && eventX <= this.musicOnButton.getPositionX() + this.BTN_HALF_SIZE)) {
-                return true;
-            }
-        }
-        return false;
     };
 
     this.showPostGameButtons = function () {

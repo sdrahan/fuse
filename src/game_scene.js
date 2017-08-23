@@ -4,11 +4,14 @@ var GameScene = cc.Scene.extend({
     soundManager: null,
     gamefield: null,
     gameStateModel: null,
+    background: null,
 
     setup: function () {
         this.soundManager = lowfat.SoundManager();
         this.gameStateModel = lowfat.GameStateModel(this.soundManager);
         this.gameStateModel.init(this);
+        this.background = lowfat.Background(lowfat.SpriteFactory, this, cc.director.getWinSize());
+        this.background.init();
         this.startBoard();
         this.scheduleUpdate();
     },
@@ -24,6 +27,7 @@ var GameScene = cc.Scene.extend({
 
     onResize: function () {
         var screenSizeInPoints = cc.director.getWinSize();
+        this.background.onResize(screenSizeInPoints);
         this.gamefield.onResize(screenSizeInPoints);
     }
 });

@@ -12,6 +12,7 @@
     "modules" : ["cocos2d", "ccui"],
 
     "jsList" : [
+        "src/background.js",
         "src/common.js",
         "src/game_scene.js",
         "src/game_state.js",

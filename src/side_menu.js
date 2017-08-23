@@ -1,199 +1,195 @@
 var lowfat = lowfat || {};
 
-lowfat.SideMenu = function (spriteFactory, soundManager, processRestartDuringGame) {
-    this.spriteFactory = spriteFactory;
-    this.soundManager = soundManager;
-    this.processRestartDuringGame = processRestartDuringGame;
-    this.container = null;
-    this.layer = null;
-    this.bg = null;
-    this.isOpen = false;
-    this.overlay = null;
-    this.isClosing = false;
+lowfat.SideMenu = function(containerParam, spriteFactory, soundManager, processRestartDuringGame) {
+    var container = null;
+    var layer = null;
+    var bg = null;
+    var isOpen = false;
+    var overlay = null;
+    var isClosing = false;
+    
+    var soundOnButton = null;
+    var soundOffButton = null;
+    var musicOnButton = null;
+    var musicOffButton = null;
+    var retryButton = null;
+    var openMenuButton = null;
+    var closeMenuButton = null;
+    
+    var BG_TILE_HEIGHT = 72;
+    var WIN_HEIGHT = 720;
+    var TWEEN_DURATION = 0.3;
+    var MENU_BTN_COORDS = {x: 360, y: 680};
+    var MENU_BTN_HALF_SIZE = 30;
+    var MENU_WIDTH = 320;
 
-    this.soundOnButton = null;
-    this.soundOffButton = null;
-    this.musicOnButton = null;
-    this.musicOffButton = null;
-    this.retryButton = null;
+    function init () {
+        container = containerParam;
 
-    this.openMenuButton = null;
-    this.closeMenuButton = null;
+        overlay = new cc.LayerColor(cc.color(0, 0, 0, 50));
+        overlay.setVisible(false);
 
-    this.BG_TILE_HEIGHT = 72;
-    this.WIN_HEIGHT = 720;
-    this.TWEEN_DURATION = 0.3;
-    this.MENU_BTN_COORDS = {x: 360, y: 680};
-    this.MENU_BTN_HALF_SIZE = 30;
-    this.MENU_WIDTH = 320;
+        container.addChild(overlay);
 
-    this.init = function (container) {
-        this.container = container;
+        layer = new cc.Node();
+        container.addChild(layer);
 
-        this.overlay = new cc.LayerColor(cc.color(0, 0, 0, 50));
-        this.overlay.setVisible(false);
+        bg = spriteFactory.getSprite("SidemenuBg", 0, 0);
+        bg.setScale(1, WIN_HEIGHT / BG_TILE_HEIGHT);
+        layer.addChild(bg);
+        layer.setPositionX(-MENU_WIDTH);
+        bg.setVisible(false);
 
-        this.container.addChild(this.overlay);
+        openMenuButton = createButton("Btn_Menu", "Btn_Menu", MENU_BTN_COORDS.x, MENU_BTN_COORDS.y, openMenuButtonEvent);
+        closeMenuButton = createButton("Btn_MenuClose", "Btn_MenuClose", MENU_BTN_COORDS.x, MENU_BTN_COORDS.y, closeMenuButtonEvent);
+        layer.addChild(openMenuButton);
+        layer.addChild(closeMenuButton);
+        openMenuButton.setVisible(true);
+        closeMenuButton.setVisible(false);
 
-        this.layer = new cc.Node();
-        this.container.addChild(this.layer);
+        retryButton = createSideMenuButton("Btn_Restart_SideMenu", "Restart", 0, retryButtonTouchEvent);
+        soundOnButton = createSideMenuButton("Btn_Sound_On_SideMenu", "Sound", 62, soundButtonTouchEvent);
+        soundOffButton = createSideMenuButton("Btn_Sound_Off_SideMenu", "Sound", 62, soundButtonTouchEvent);
+        musicOnButton = createSideMenuButton("Btn_Music_On_SideMenu", "Music", 124, musicButtonTouchEvent);
+        musicOffButton = createSideMenuButton("Btn_Music_Off_SideMenu", "Music", 124, musicButtonTouchEvent);
 
-        this.bg = this.spriteFactory.getSprite("SidemenuBg", 0, 0);
-        this.bg.setScale(1, this.WIN_HEIGHT / this.BG_TILE_HEIGHT);
-        this.layer.addChild(this.bg);
-        this.layer.setPositionX(-this.MENU_WIDTH);
-        this.bg.setVisible(false);
+        updateSoundButtons();
+        updateMusicButtons();
+    }
 
-        this.openMenuButton = this.createButton("Btn_Menu", "Btn_Menu", this.MENU_BTN_COORDS.x, this.MENU_BTN_COORDS.y, this.openMenuButtonEvent);
-        this.closeMenuButton = this.createButton("Btn_MenuClose", "Btn_MenuClose", this.MENU_BTN_COORDS.x, this.MENU_BTN_COORDS.y, this.closeMenuButtonEvent);
-        this.layer.addChild(this.openMenuButton);
-        this.layer.addChild(this.closeMenuButton);
-        this.openMenuButton.setVisible(true);
-        this.closeMenuButton.setVisible(false);
-
-        this.retryButton = this.createSideMenuButton("Btn_Restart_SideMenu", "Restart", 0, this.retryButtonTouchEvent);
-        this.soundOnButton = this.createSideMenuButton("Btn_Sound_On_SideMenu", "Sound", 62, this.soundButtonTouchEvent);
-        this.soundOffButton = this.createSideMenuButton("Btn_Sound_Off_SideMenu", "Sound", 62, this.soundButtonTouchEvent);
-        this.musicOnButton = this.createSideMenuButton("Btn_Music_On_SideMenu", "Music", 124, this.musicButtonTouchEvent);
-        this.musicOffButton = this.createSideMenuButton("Btn_Music_Off_SideMenu", "Music", 124, this.musicButtonTouchEvent);
-
-        this.updateSoundButtons();
-        this.updateMusicButtons();
-    };
-
-    this.retryButtonTouchEvent = function (sender, type) {
+    function retryButtonTouchEvent (sender, type) {
         if (type == ccui.Widget.TOUCH_ENDED) {
-            this.onRetryButton();
+            onRetryButton();
         }
-    };
+    }
 
-    this.soundButtonTouchEvent = function (sender, type) {
+    function soundButtonTouchEvent (sender, type) {
         if (type == ccui.Widget.TOUCH_ENDED) {
-            this.onSoundButton();
+            onSoundButton();
         }
-    };
+    }
 
-    this.musicButtonTouchEvent = function (sender, type) {
+    function musicButtonTouchEvent (sender, type) {
         if (type == ccui.Widget.TOUCH_ENDED) {
-            this.onMusicButton();
+            onMusicButton();
         }
-    };
+    }
 
-    this.onRetryButton = function () {
-        this.processRestartDuringGame();
-    };
+    function onRetryButton () {
+        processRestartDuringGame();
+    }
 
-    this.onSoundButton = function () {
-        this.soundManager.toggleSoundOn();
-        this.updateSoundButtons();
-    };
+    function onSoundButton () {
+        soundManager.toggleSoundOn();
+        updateSoundButtons();
+    }
 
-    this.onMusicButton = function () {
-        this.soundManager.toggleMusicOn();
-        this.updateMusicButtons();
-    };
+    function onMusicButton () {
+        soundManager.toggleMusicOn();
+        updateMusicButtons();
+    }
 
-    this.updateSoundButtons = function () {
-        this.soundOnButton.setVisible(this.soundManager.getSoundOn());
-        this.soundOffButton.setVisible(!this.soundManager.getSoundOn());
-        this.addProperSoundListener();
-    };
+    function updateSoundButtons () {
+        soundOnButton.setVisible(soundManager.getSoundOn());
+        soundOffButton.setVisible(!soundManager.getSoundOn());
+        addProperSoundListener();
+    }
 
-    this.addProperSoundListener = function () {
-        this.soundOnButton.setTouchEnabled(this.soundManager.getSoundOn());
-        this.soundOffButton.setTouchEnabled(!this.soundManager.getSoundOn());
-    };
+    function addProperSoundListener () {
+        soundOnButton.setTouchEnabled(soundManager.getSoundOn());
+        soundOffButton.setTouchEnabled(!soundManager.getSoundOn());
+    }
 
-    this.updateMusicButtons = function () {
-        this.musicOnButton.setVisible(this.soundManager.getMusicOn());
-        this.musicOffButton.setVisible(!this.soundManager.getMusicOn());
-        this.addProperMusicListener();
-    };
+    function updateMusicButtons () {
+        musicOnButton.setVisible(soundManager.getMusicOn());
+        musicOffButton.setVisible(!soundManager.getMusicOn());
+        addProperMusicListener();
+    }
 
-    this.addProperMusicListener = function () {
-        this.musicOnButton.setTouchEnabled(this.soundManager.getMusicOn());
-        this.musicOffButton.setTouchEnabled(!this.soundManager.getMusicOn());
-    };
+    function addProperMusicListener () {
+        musicOnButton.setTouchEnabled(soundManager.getMusicOn());
+        musicOffButton.setTouchEnabled(!soundManager.getMusicOn());
+    }
 
-    this.openMenuButtonEvent = function (sender, type) {
+    function openMenuButtonEvent (sender, type) {
         if (type == ccui.Widget.TOUCH_ENDED) {
-            this.onOpenMenuButton();
+            onOpenMenuButton();
         }
-    };
+    }
 
-    this.closeMenuButtonEvent = function (sender, type) {
+    function closeMenuButtonEvent (sender, type) {
         if (type == ccui.Widget.TOUCH_ENDED) {
-            this.onCloseMenuButton();
+            onCloseMenuButton();
         }
-    };
+    }
 
-    this.onCloseMenuButton = function () {
-        this.closeMenu();
-    };
+    function onCloseMenuButton () {
+        closeMenu();
+    }
 
-    this.closeMenu = function () {
-        if (this.isClosing) {
+    function closeMenu () {
+        if (isClosing) {
             return;
         }
 
-        this.openMenuButton.setVisible(true);
-        this.closeMenuButton.setVisible(false);
-        this.openMenuButton.setTouchEnabled(false);
-        this.isOpen = false;
-        this.isClosing = true;
+        openMenuButton.setVisible(true);
+        closeMenuButton.setVisible(false);
+        openMenuButton.setTouchEnabled(false);
+        isOpen = false;
+        isClosing = true;
 
-        this.layer.stopAllActions();
-        var moveAction = new cc.MoveTo(this.TWEEN_DURATION, -this.MENU_WIDTH, this.layer.getPositionY()).easing(cc.easeCubicActionIn());
-        var callbackAction = new cc.CallFunc(this.onCloseMenuFinished, this);
-        this.layer.runAction(new cc.Sequence(moveAction, callbackAction));
-    };
+        layer.stopAllActions();
+        var moveAction = new cc.MoveTo(TWEEN_DURATION, -MENU_WIDTH, layer.getPositionY()).easing(cc.easeCubicActionIn());
+        var callbackAction = new cc.CallFunc(onCloseMenuFinished, this);
+        layer.runAction(new cc.Sequence(moveAction, callbackAction));
+    }
 
-    this.onCloseMenuFinished = function () {
-        this.bg.setVisible(false);
-        this.overlay.setVisible(false);
-        this.openMenuButton.setTouchEnabled(true);
-        this.isClosing = false;
-    };
+    function onCloseMenuFinished () {
+        bg.setVisible(false);
+        overlay.setVisible(false);
+        openMenuButton.setTouchEnabled(true);
+        isClosing = false;
+    }
 
-    this.onOpenMenuButton = function () {
-        this.openMenu();
-    };
+    function onOpenMenuButton () {
+        openMenu();
+    }
 
-    this.openMenu = function () {
-        this.openMenuButton.setVisible(false);
-        this.closeMenuButton.setVisible(true);
-        this.closeMenuButton.setTouchEnabled(false);
-        this.isOpen = true;
+    function openMenu () {
+        openMenuButton.setVisible(false);
+        closeMenuButton.setVisible(true);
+        closeMenuButton.setTouchEnabled(false);
+        isOpen = true;
 
-        this.bg.setVisible(true);
-        this.layer.stopAllActions();
-        var moveAction = new cc.MoveTo(this.TWEEN_DURATION, 0, this.layer.getPositionY()).easing(cc.easeCubicActionOut());
-        var callbackAction = new cc.CallFunc(this.onOpenMenuFinished, this);
-        this.layer.runAction(new cc.Sequence(moveAction, callbackAction));
-        this.overlay.setVisible(true);
-    };
+        bg.setVisible(true);
+        layer.stopAllActions();
+        var moveAction = new cc.MoveTo(TWEEN_DURATION, 0, layer.getPositionY()).easing(cc.easeCubicActionOut());
+        var callbackAction = new cc.CallFunc(onOpenMenuFinished, this);
+        layer.runAction(new cc.Sequence(moveAction, callbackAction));
+        overlay.setVisible(true);
+    }
 
-    this.onOpenMenuFinished = function () {
-        this.closeMenuButton.setTouchEnabled(true);
-    };
+    function onOpenMenuFinished () {
+        closeMenuButton.setTouchEnabled(true);
+    }
 
-    this.createButton = function (outSkin, overSkin, x, y, onTriggeredEvent) {
+    function createButton (outSkin, overSkin, x, y, onTriggeredEvent) {
         var button = new ccui.Button();
-        var outSkinTextureName = this.spriteFactory.getMCTextureName(outSkin);
-        var overSkinTextureName = this.spriteFactory.getMCTextureName(overSkin);
+        var outSkinTextureName = spriteFactory.getMCTextureName(outSkin);
+        var overSkinTextureName = spriteFactory.getMCTextureName(overSkin);
         button.loadTextures(outSkinTextureName, overSkinTextureName, "", ccui.Widget.PLIST_TEXTURE);
         button.setPosition(x, y);
         button.addTouchEventListener(onTriggeredEvent, this);
         button.setZoomScale(-0.05);
         return button;
-    };
+    }
 
-    this.createSideMenuButton = function (iconSpriteName, labelText, y, onTriggeredEvent) {
+    function createSideMenuButton (iconSpriteName, labelText, y, onTriggeredEvent) {
         var btnHeightExcludingSeparator = 60;
         var separatorHeight = 2;
 
         var button = new ccui.Button();
-        var iconFrameName = this.spriteFactory.getMCTextureName("SidemenuBtnBg");
+        var iconFrameName = spriteFactory.getMCTextureName("SidemenuBtnBg");
         button.loadTextures(iconFrameName, "", "", ccui.Widget.PLIST_TEXTURE);
         button.setZoomScale(0);
         button.setAnchorPoint(0, 0);
@@ -212,37 +208,44 @@ lowfat.SideMenu = function (spriteFactory, soundManager, processRestartDuringGam
         label.setPosition(70, btnHeightExcludingSeparator / 2 + separatorHeight);
         button.addChild(label);
 
-        var icon = this.spriteFactory.getSprite(iconSpriteName, 0.5, 0.5);
+        var icon = spriteFactory.getSprite(iconSpriteName, 0.5, 0.5);
         icon.setPosition(30, btnHeightExcludingSeparator / 2 + separatorHeight);
         button.addChild(icon);
-        this.layer.addChild(button);
+        layer.addChild(button);
         return button;
-    };
+    }
 
-    this.processClickAndGetIfAllowed = function (eventX, eventY) {
-        if (this.isOpen == false) {
-            if (eventY >= (this.MENU_BTN_COORDS.y - this.MENU_BTN_HALF_SIZE)) {
-                if (eventX >= this.openMenuButton.getPositionX() - this.MENU_WIDTH - this.MENU_BTN_HALF_SIZE && eventX <= this.openMenuButton.getPositionX() - this.MENU_WIDTH + this.MENU_BTN_HALF_SIZE)
+    function processClickAndGetIfAllowed (eventX, eventY) {
+        if (isOpen == false) {
+            if (eventY >= (MENU_BTN_COORDS.y - MENU_BTN_HALF_SIZE)) {
+                if (eventX >= openMenuButton.getPositionX() - MENU_WIDTH - MENU_BTN_HALF_SIZE && eventX <= openMenuButton.getPositionX() - MENU_WIDTH + MENU_BTN_HALF_SIZE)
                     return false;
                 }
             return true;
         }
 
-        var isInside = eventX <= this.MENU_WIDTH;
+        var isInside = eventX <= MENU_WIDTH;
         if (!isInside) {
-            this.closeMenu();
+            closeMenu();
         }
         return false;
-    };
+    }
 
-    this.setMenuAvailable = function (value) {
-        if (this.isOpen) {
-            this.closeMenu();
+    function setMenuAvailable (value) {
+        if (isOpen) {
+            closeMenu();
         }
-        this.openMenuButton.setVisible(value);
-    };
+        openMenuButton.setVisible(value);
+    }
 
-    this.onResize = function (winSizeWidth) {
-        this.overlay.setContentSize(winSizeWidth, 720);
-    };
+    function onResize (winSizeWidth) {
+        overlay.setContentSize(winSizeWidth, 720);
+    }
+
+    return {
+        init: init,
+        processClickAndGetIfAllowed: processClickAndGetIfAllowed,
+        setMenuAvailable: setMenuAvailable,
+        onResize: onResize
+    }
 };

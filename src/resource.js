@@ -3,6 +3,8 @@ var res = {
     spritesheet_plist: "res/spritesheet.plist",
     floatingscorefont_fnt: "res/floating_score_font-export.fnt",
     floatingscorefont_png: "res/floating_score_font-export.png",
+    highscorefont_fnt: "res/high_score_font-export.fnt",
+    highscorefont_png: "res/high_score_font-export.png",
     scorefont_fnt: "res/score_font-export.fnt",
     scorefont_png: "res/score_font-export.png",
     sound_match_1: "res/match_1.mp3",

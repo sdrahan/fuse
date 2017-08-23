@@ -17,9 +17,6 @@ lowfat.Gamefield = function (scene, spriteFactory, gameStateModel, soundManager,
     var MINIATURES_Y = 582;
     var MINIATURES_SCALE = 0.5;
 
-    var bgSprite = null;
-    var bgLeftSprite = null;
-    var bgRightSprite = null;
     var fgContainer = null;
     var uiContainer = null;
     var board = null;
@@ -68,12 +65,6 @@ lowfat.Gamefield = function (scene, spriteFactory, gameStateModel, soundManager,
     }
 
     function initLayers() {
-        bgSprite = spriteFactory.getSprite("Bg", 0, 0);
-        container.addChild(bgSprite);
-        bgLeftSprite = spriteFactory.getSprite("BgLeft", 0, 0);
-        container.addChild(bgLeftSprite);
-        bgRightSprite = spriteFactory.getSprite("BgRight", 1, 0);
-        container.addChild(bgRightSprite);
         flashEffect = lowfat.VisualEffectBackgroundHighlight();
         flashEffect.init(container);
         fgContainer = new cc.Node();
@@ -87,11 +78,11 @@ lowfat.Gamefield = function (scene, spriteFactory, gameStateModel, soundManager,
         scoreUI.init();
         hintUI = lowfat.HintUI(fgContainer, spriteFactory);
         hintUI.init(MAX_VALUE);
-        ingameUI = new lowfat.IngameUI(spriteFactory, soundManager, getScoreUI, processNewGame, processRestartDuringGame);
+        ingameUI = new lowfat.IngameUI(spriteFactory, getScoreUI, processNewGame);
         ingameUI.init(uiContainer);
         floatingScore = lowfat.FloatingScore(uiContainer, fgContainer);
-        sideMenu = new lowfat.SideMenu(spriteFactory, soundManager, processRestartDuringGame);
-        sideMenu.init(uiContainer);
+        sideMenu = lowfat.SideMenu(uiContainer, spriteFactory, soundManager, processRestartDuringGame);
+        sideMenu.init();
     }
 
     function initBoard() {
@@ -138,7 +129,7 @@ lowfat.Gamefield = function (scene, spriteFactory, gameStateModel, soundManager,
     }
 
     function initTutorial() {
-        tutorial = lowfat.Tutorial(spriteFactory, getBoard, removeAllBlockModelsAndViews, createBlockView, setCurrentPack, setNextPack, setScore, getScoreUI, getIngameUI, getSideMenu, setMaxUnlockedValue);
+        tutorial = lowfat.Tutorial(spriteFactory, getBoard, removeAllBlockModelsAndViews, createBlockView, setCurrentPack, setNextPack, setScore, getScoreUI, getSideMenu, setMaxUnlockedValue);
         if (gameStateModel.getIsTutorialFinished() == false || gameStateModel.getIsFirstGame()) {
             tutorial.init(uiContainer, cc.sys.isMobile, gameStateModel);
         }
@@ -608,7 +599,6 @@ lowfat.Gamefield = function (scene, spriteFactory, gameStateModel, soundManager,
 
     function processRestartDuringGame() {
         inputIsLocked = true;
-        ingameUI.setEnabled(false);
         sideMenu.setMenuAvailable(false);
         scene.stopAllActions();
         removeTopBlocks();
@@ -618,7 +608,6 @@ lowfat.Gamefield = function (scene, spriteFactory, gameStateModel, soundManager,
 
     function processGameLost() {
         inputIsLocked = true;
-        ingameUI.setRetryButtonVisible(false);
         sideMenu.setMenuAvailable(false);
         scene.stopAllActions();
         board.clear();
@@ -629,7 +618,6 @@ lowfat.Gamefield = function (scene, spriteFactory, gameStateModel, soundManager,
 
     function processNewGame() {
         grid.runAction(new cc.FadeIn(0.1));
-        ingameUI.setRetryButtonVisible(true);
         sideMenu.setMenuAvailable(true);
         restart();
     }
@@ -652,7 +640,6 @@ lowfat.Gamefield = function (scene, spriteFactory, gameStateModel, soundManager,
 
         createNewPack();
 
-        ingameUI.setEnabled(true);
         sideMenu.setMenuAvailable(true);
     }
 
@@ -774,8 +761,6 @@ lowfat.Gamefield = function (scene, spriteFactory, gameStateModel, soundManager,
         fgContainer.setPositionX((screenSizeInPoints.width - boardViewWidth) / 2);
         ingameUI.onResize(screenSizeInPoints.width);
         sideMenu.onResize(screenSizeInPoints.width);
-        bgSprite.setScaleX(screenSizeInPoints.width / bgSprite.getContentSize().width);
-        bgRightSprite.setPositionX(screenSizeInPoints.width);
         flashEffect.onResize(screenSizeInPoints.width, screenSizeInPoints.height);
         tutorial.onResize(screenSizeInPoints.width);
         scoreUI.onResize(screenSizeInPoints.width);
@@ -863,31 +848,6 @@ lowfat.Gamefield = function (scene, spriteFactory, gameStateModel, soundManager,
         start: start,
         update: update,
         onResize: onResize
-        // getSideMenu: getSideMenu,
-        // getBlockPreviews: getBlockPreviews,
-        // getTopBlocks: getTopBlocks,
-        // updateBlockPreviews: updateBlockPreviews,
-        // pixelsToCellX: pixelsToCellX,
-        // pixelsToCellY: pixelsToCellY,
-        // cellToPixelsX: cellToPixelsX,
-        // getFgContainer: getFgContainer,
-        // setNextPackX: setNextPackX,
-        // getScene: getScene,
-        // createBlockView: createBlockView,
-        // setCurrentPack: setCurrentPack,
-        // setNextPack: setNextPack,
-        // setScore: setScore,
-        // getScoreUI: getScoreUI,
-        // getIngameUI: getIngameUI,
-        // setMaxUnlockedValue: setMaxUnlockedValue,
-        // getMaxUnlockedValue: getMaxUnlockedValue,
-        // removeAllBlockModelsAndViews: removeAllBlockModelsAndViews,
-        // getBoard: getBoard,
-        // processRestartDuringGame: processRestartDuringGame,
-        // processNewGame: processNewGame,
-        // onNoMatchesFoundWithDelay: onNoMatchesFoundWithDelay,
-        // processChainMergesWithDelay: processChainMergesWithDelay,
-        // showFallingBlocks: showFallingBlocks
     }
 };
 
@@ -1235,18 +1195,18 @@ lowfat.ScoreUI = function (container) {
     var COORDS_NORMAL_SCORE = {x: 174, y: 675};
     var SCALE_NORMAL_SCORE = 1;
     var COORDS_NORMAL_HISCORE = {x: 65, y: 685};
-    var SCALE_NORMAL_HISCORE = 0.5;
+    var SCALE_NORMAL_HISCORE = 1;
     var COORDS_CENTERED_SCORE = {x: 174, y: 480};
     var SCALE_CENTERED_SCORE = 1.2;
     var COORDS_CENTERED_HISCORE = {x: 150, y: 390};
-    var SCALE_CENTERED_HISCORE = 0.7;
+    var SCALE_CENTERED_HISCORE = 1.2;
 
     function init() {
         scoreLabel = new cc.LabelBMFont("0", res.scorefont_fnt, 250, cc.TEXT_ALIGNMENT_CENTER);
         scoreLabel.setPosition(COORDS_NORMAL_SCORE.x, COORDS_NORMAL_SCORE.y);
         scoreLabel.setScale(SCALE_NORMAL_SCORE, SCALE_NORMAL_SCORE);
         container.addChild(scoreLabel);
-        highScoreLabel = new cc.LabelBMFont("0", res.scorefont_fnt, 250, cc.TEXT_ALIGNMENT_CENTER);
+        highScoreLabel = new cc.LabelBMFont("0", res.highscorefont_fnt, 250, cc.TEXT_ALIGNMENT_CENTER);
         highScoreLabel.setPosition(COORDS_NORMAL_HISCORE.x, COORDS_NORMAL_HISCORE.y);
         highScoreLabel.setScale(SCALE_NORMAL_HISCORE, SCALE_NORMAL_HISCORE);
         container.addChild(highScoreLabel);
@@ -1902,7 +1862,7 @@ lowfat.VisualEffectBackgroundHighlight = function () {
     }
 };
 
-lowfat.Tutorial = function (spriteFactory, getBoard, removeAllBlockModelsAndViews, createBlockView, setCurrentPack, setNextPack, setScore, getScoreUI, getIngameUI, getSideMenu, setMaxUnlockedValue) {
+lowfat.Tutorial = function (spriteFactory, getBoard, removeAllBlockModelsAndViews, createBlockView, setCurrentPack, setNextPack, setScore, getScoreUI, getSideMenu, setMaxUnlockedValue) {
     var container = null;
     var isMobile = false;
     var isActive = false;
@@ -1944,7 +1904,6 @@ lowfat.Tutorial = function (spriteFactory, getBoard, removeAllBlockModelsAndView
         setNextPack([2, 1]);
         setScore(0);
         getScoreUI().displayNewScoreInstantly(0);
-        getIngameUI().setRetryButtonVisible(false);
         getSideMenu().setMenuAvailable(false);
         setMaxUnlockedValue(1);
     }
@@ -2053,7 +2012,6 @@ lowfat.Tutorial = function (spriteFactory, getBoard, removeAllBlockModelsAndView
     }
 
     function tutorialFinished() {
-        getIngameUI().setRetryButtonVisible(true);
         getSideMenu().setMenuAvailable(true);
         gameStateModel.setIsTutorialFinished(true);
     }
