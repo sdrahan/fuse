@@ -63,7 +63,7 @@ lowfat.IngameUI = function (spriteFactory, getScoreUI, processNewGame) {
 
     this.onNewGameButton = function () {
         this.hidePostGameButtons();
-        this.getScoreUI().moveToNormalPosition();
+        this.getScoreUI().slowlyShow();
     };
 
     this.onSocialConnectButton = function () {

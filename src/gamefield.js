@@ -687,7 +687,7 @@ lowfat.Gamefield = function (scene, spriteFactory, gameStateModel, soundManager,
     function onLostAnimationFinished(target, columns) {
         removeBlocksAndLostAnimationColumns(columns);
         grid.runAction(new cc.FadeOut(0.1));
-        scoreUI.moveToCenter();
+        scoreUI.slowlyHide();
         ingameUI.showPostGameButtons();
     }
 
@@ -1248,6 +1248,22 @@ lowfat.ScoreUI = function (container) {
         updateLabels();
     }
 
+    function slowlyHide() {
+        var duration = 0.5;
+        var scoreMoveAction = new cc.MoveTo(duration, scoreLabel.getPositionX(), 800).easing(cc.easeCubicActionOut());
+        var hiScoreMoveAction = new cc.MoveTo(duration, highScoreLabel.getPositionX(), 800).easing(cc.easeCubicActionOut());
+        scoreLabel.runAction(scoreMoveAction);
+        highScoreLabel.runAction(hiScoreMoveAction);
+    }
+
+    function slowlyShow() {
+        var duration = 0.5;
+        var scoreMoveAction = new cc.MoveTo(duration, COORDS_NORMAL_SCORE.x, COORDS_NORMAL_SCORE.y).easing(cc.easeCubicActionOut());
+        var hiScoreMoveAction = new cc.MoveTo(duration, screenWidth - COORDS_NORMAL_HISCORE.x - container.getPositionX(), COORDS_NORMAL_HISCORE.y).easing(cc.easeCubicActionOut());
+        scoreLabel.runAction(scoreMoveAction);
+        highScoreLabel.runAction(hiScoreMoveAction);
+    }
+
     function moveToCenter() {
         var duration = 0.5;
         var scoreMoveAction = new cc.MoveTo(duration, COORDS_CENTERED_SCORE.x, COORDS_CENTERED_SCORE.y).easing(cc.easeCubicActionOut());
@@ -1282,6 +1298,8 @@ lowfat.ScoreUI = function (container) {
     return {
         init: init,
         showInitial: showInitial,
+        slowlyHide: slowlyHide,
+        slowlyShow: slowlyShow,
         displayNewScore: displayNewScore,
         update: update,
         displayNewScoreInstantly: displayNewScoreInstantly,
