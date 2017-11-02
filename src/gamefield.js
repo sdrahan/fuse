@@ -74,6 +74,8 @@ lowfat.Gamefield = function (scene, spriteFactory, gameStateModel, soundManager,
         grid = spriteFactory.getSprite("Grid", 0, 0);
         fgContainer.addChild(grid);
         grid.setPosition(0, BOTTOM_MARGIN);
+        var boardAppearAnimation = lowfat.BoardAppearAnimation(spriteFactory, grid, fgContainer, COLS, ROWS, BLOCK_SPRITE_WIDTH, BOTTOM_MARGIN);
+        boardAppearAnimation.show();
         scoreUI = lowfat.ScoreUI(fgContainer);
         scoreUI.init();
         hintUI = lowfat.HintUI(fgContainer, spriteFactory);
@@ -2187,5 +2189,47 @@ lowfat.Tutorial = function (spriteFactory, getBoard, removeAllBlockModelsAndView
         processDrop: processDrop,
         processDropFinished: processDropFinished,
         onResize: onResize
+    }
+};
+
+lowfat.BoardAppearAnimation = function (spriteFactory, bigGridSprite, container, cols, rows, cellSize, bottomMargin) {
+
+    var cells = [];
+
+    function show() {
+        bigGridSprite.setVisible(false);
+        for (var row = 0; row < rows; row++) {
+            for (var col = 0; col < cols; col++) {
+                var gridCell = spriteFactory.getSprite("GridCell", 0, 0);
+                gridCell.setPosition(cellSize * col, cellSize * row + bottomMargin);
+                container.addChild(gridCell);
+                showWithDelay(gridCell, Math.random() * 0.4);
+                cells.push(gridCell);
+            }
+        }
+
+        // todo: remove all cells after delay
+        var delayAction = new cc.DelayTime(1);
+        var callFuncAction = new cc.CallFunc(removeAllCellsAndShowBigGrid);
+        cells[0].runAction(new cc.Sequence(delayAction, callFuncAction));
+    }
+
+    function removeAllCellsAndShowBigGrid() {
+        for (var i = 0; i < cells.length; i++) {
+            cells[i].removeFromParent();
+        }
+        bigGridSprite.setVisible(true);
+    }
+
+    function showWithDelay(gridCell, delay) {
+        gridCell.setOpacity(0);
+        var delayAction = new cc.DelayTime(delay);
+        var fadeInAction = new cc.FadeIn(0.4);
+        // todo: maybe add some tween?
+        gridCell.runAction(new cc.Sequence(delayAction, fadeInAction));
+    }
+
+    return {
+        show:show
     }
 };
