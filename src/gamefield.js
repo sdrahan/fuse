@@ -621,6 +621,7 @@ lowfat.Gamefield = function (scene, spriteFactory, gameStateModel, soundManager,
     function processNewGame() {
         grid.runAction(new cc.FadeIn(0.1));
         sideMenu.setMenuAvailable(true);
+        scoreUI.slowlyShow()
         restart();
     }
 
@@ -690,7 +691,9 @@ lowfat.Gamefield = function (scene, spriteFactory, gameStateModel, soundManager,
         removeBlocksAndLostAnimationColumns(columns);
         grid.runAction(new cc.FadeOut(0.1));
         scoreUI.slowlyHide();
-        ingameUI.showPostGameButtons();
+        // ingameUI.showPostGameButtons();
+        var gameOverPopup = lowfat.GameOverPopup(spriteFactory, uiContainer, screenSizeInPoints, processNewGame, 584728);
+        gameOverPopup.show();
     }
 
     function removeBlocksAndLostAnimationColumns(columns) {
@@ -1866,7 +1869,7 @@ lowfat.VisualEffectBackgroundHighlight = function () {
     }
 
     function getHighlightAlpha(value) {
-        var result = value * 15;
+        var result = value * 10;
         return Math.min(result, 80);
     }
 
