@@ -131,8 +131,8 @@ lowfat.Gamefield = function (scene, spriteFactory, gameStateModel, soundManager,
     }
 
     function initTutorial() {
-        tutorial = lowfat.Tutorial(spriteFactory, getBoard, removeAllBlockModelsAndViews, createBlockView, setCurrentPack, setNextPack, setScore, getScoreUI, getSideMenu, setMaxUnlockedValue);
-        if (gameStateModel.getIsTutorialFinished() == false || gameStateModel.getIsFirstGame()) {
+        tutorial = lowfat.TutorialNew(spriteFactory, getBoard, removeAllBlockModelsAndViews, createBlockView, setCurrentPack, setNextPack, setScore, getScoreUI, getSideMenu, setMaxUnlockedValue);
+        if (gameStateModel.getIsTutorialFinished() == false || gameStateModel.getIsFirstGame() || true) {
             tutorial.init(uiContainer, cc.sys.isMobile, gameStateModel);
         }
     }
@@ -2211,7 +2211,6 @@ lowfat.BoardAppearAnimation = function (spriteFactory, bigGridSprite, container,
             }
         }
 
-        // todo: remove all cells after delay
         var delayAction = new cc.DelayTime(1);
         var callFuncAction = new cc.CallFunc(removeAllCellsAndShowBigGrid);
         cells[0].runAction(new cc.Sequence(delayAction, callFuncAction));
@@ -2221,6 +2220,7 @@ lowfat.BoardAppearAnimation = function (spriteFactory, bigGridSprite, container,
         for (var i = 0; i < cells.length; i++) {
             cells[i].removeFromParent();
         }
+        cells = [];
         bigGridSprite.setVisible(true);
     }
 
