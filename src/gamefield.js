@@ -1197,9 +1197,9 @@ lowfat.ScoreUI = function (container) {
     var screenWidth = 0;
 
     var SECONDS_FOR_ONE_SCORE_CHANGE = 1;
-    var COORDS_NORMAL_SCORE = {x: 174, y: 675};
+    var COORDS_NORMAL_SCORE = {x: 174, y: 680};
     var SCALE_NORMAL_SCORE = 1;
-    var COORDS_NORMAL_HISCORE = {x: 65, y: 685};
+    var COORDS_NORMAL_HISCORE = {x: 65, y: 707};
     var SCALE_NORMAL_HISCORE = 1;
     var COORDS_CENTERED_SCORE = {x: 174, y: 480};
     var SCALE_CENTERED_SCORE = 1.2;
