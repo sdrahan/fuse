@@ -206,7 +206,6 @@ lowfat.TutorialPopup = function (container, descriptionText, headerText, screenW
         node.setPosition(screenWidth / 2, 360);
 
         if (hasHeader) {
-            // headerLabel = createLabel("Привет!", 42, 0, cc.VERTICAL_TEXT_ALIGNMENT_BOTTOM);
             headerLabel = createLabel(headerText, 42, 0, cc.VERTICAL_TEXT_ALIGNMENT_BOTTOM);
             descriptionLabel = createLabel(descriptionText, 24, 1, cc.VERTICAL_TEXT_ALIGNMENT_TOP);
             headerLabel.setOpacity(0);
@@ -214,7 +213,6 @@ lowfat.TutorialPopup = function (container, descriptionText, headerText, screenW
             descriptionLabel = createLabel(descriptionText, 24, 1, cc.VERTICAL_TEXT_ALIGNMENT_CENTER);
         }
         
-        // descriptionLabel = createLabel("Давай играть во Fuse\nСобирай три и больше\nблоков одного цвета", 24, 1, cc.VERTICAL_TEXT_ALIGNMENT_TOP);
         descriptionLabel.setOpacity(0);
     }
 
