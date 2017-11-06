@@ -131,7 +131,7 @@ lowfat.Gamefield = function (scene, spriteFactory, gameStateModel, soundManager,
     }
 
     function initTutorial() {
-        tutorial = lowfat.TutorialNew(spriteFactory, getBoard, removeAllBlockModelsAndViews, createBlockView, setCurrentPack, setNextPack, setScore, getScoreUI, getSideMenu, setMaxUnlockedValue);
+        tutorial = lowfat.TutorialNew(spriteFactory, getBoard, removeAllBlockModelsAndViews, createBlockView, setCurrentPack, setNextPack, setScore, getScoreUI, getSideMenu, setMaxUnlockedValue, screenSizeInPoints);
         if (gameStateModel.getIsTutorialFinished() == false || gameStateModel.getIsFirstGame() || true) {
             tutorial.init(uiContainer, cc.sys.isMobile, gameStateModel);
         }

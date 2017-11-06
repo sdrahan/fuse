@@ -30,7 +30,7 @@ lowfat.TutorialNew = function (spriteFactory, getBoard, removeAllBlockModelsAndV
         introString += "\n\n";
         introString += lowfat.LocalizationManager.getString(isMobile ? "tutorial_drop_mobile" : "tutorial_drop_pc");
         popupGameGoal = createPopup(160, introString, lowfat.LocalizationManager.getString("tutorial_goal_header"));
-        popupGameGoal.setPositionY(710);
+        popupGameGoal.setPositionY(360);
         popupGameGoal.fadeIn();
 
         getBoard().clear();
@@ -179,118 +179,6 @@ lowfat.TutorialNew = function (spriteFactory, getBoard, removeAllBlockModelsAndV
         return popup;
     }
 
-    function createPopupOld(popupHeight, hint, header) {
-        var hasHeader = header !== undefined && header != null && header != "";
-        var popupNode = new cc.Node();
-        var bg = createLabelBg(popupHeight);
-        var headerLabel = null;
-        popupNode.setCascadeOpacityEnabled(true);
-        popupNode.addChild(bg);
-
-        if (hasHeader) {
-            headerLabel = new cc.LabelTTF(
-                header,
-                "Arial",
-                30,
-                cc.size(HEADER_WIDTH, HEADER_HEIGHT),
-                cc.TEXT_ALIGNMENT_CENTER,
-                cc.VERTICAL_TEXT_ALIGNMENT_TOP);
-            headerLabel.setAnchorPoint(0.5, 1);
-            headerLabel.setColor(cc.color(0, 0, 0));
-            popupNode.addChild(headerLabel);
-            headerLabel.setPositionY(HEADER_MARGIN_Y);
-        }
-
-        var labelHeight = hasHeader ? popupHeight - 34 : popupHeight;
-        var labelY = hasHeader ? -34 : 0;
-        var label = new cc.LabelTTF(
-            hint,
-            "Arial",
-            18,
-            cc.size(LABEL_MIN_WIDTH, labelHeight),
-            cc.TEXT_ALIGNMENT_CENTER,
-            cc.VERTICAL_TEXT_ALIGNMENT_CENTER);
-        label.setAnchorPoint(0.5, 1);
-        label.setColor(cc.color(0, 0, 0));
-        popupNode.addChild(label);
-        label.setPositionY(labelY);
-
-        var popup = {
-            popupNode: popupNode,
-            hasHeader: hasHeader,
-            bg: bg,
-            bgHeight: popupHeight,
-            headerLabel: headerLabel,
-            label: label,
-            labelHeight: labelHeight,
-
-            addToParent: function (container) {
-                container.addChild(popupNode);
-            },
-
-            setPositionX: function (x) {
-                this.popupNode.setPositionX(x);
-            },
-
-            setPositionY: function (y) {
-                this.popupNode.setPositionY(y);
-            },
-
-            onResize: function (width) {
-                var suggestedLabelWidth = width - LABEL_MARGIN_X * 2;
-                var labelWidth = Math.max(Math.min(suggestedLabelWidth, LABEL_MAX_WIDTH), LABEL_MIN_WIDTH);
-                var suggestedBgWidth = width - BG_MARGIN_X * 2;
-                var bgWidth = Math.max(Math.min(suggestedBgWidth, BG_MAX_WIDTH), BG_MIN_WIDTH);
-
-                this.setPositionX(width / 2);
-                this.label.setDimensions(labelWidth, this.labelHeight);
-                this.bg.setContentSize(bgWidth, this.bgHeight);
-            },
-
-            fadeIn: function (delay) {
-                this.popupNode.setOpacity(0);
-                var fadeInDuration = 0.5;
-                if (delay === undefined || delay == null) {
-                    this.popupNode.runAction(new cc.FadeIn(fadeInDuration));
-                } else {
-                    this.popupNode.runAction(new cc.Sequence(new cc.DelayTime(delay), new cc.FadeIn(fadeInDuration)));
-                }
-            },
-
-            fadeOut: function () {
-                var fadeOutDuration = 0.5;
-                var fadeOutAction = new cc.FadeOut(fadeOutDuration);
-                var callFuncAction = new cc.CallFunc(this.onFadeOutFinished, this);
-                this.popupNode.runAction(new cc.Sequence(fadeOutAction, callFuncAction));
-            },
-
-            onFadeOutFinished: function () {
-                this.popupNode.removeFromParent();
-            },
-
-            moveToY: function (toY, delay) {
-                var delayAction = new cc.DelayTime(delay);
-                var moveDuration = 0.3;
-                var moveAction = new cc.MoveTo(moveDuration, this.popupNode.getPositionX(), toY).easing(cc.easeCubicActionOut());
-                this.popupNode.runAction(new cc.Sequence(delayAction, moveAction));
-            }
-        };
-
-        popup.addToParent(container);
-        popups.push(popup);
-        popup.onResize(currentWidth);
-        return popup;
-    }
-
-    function createLabelBg(height) {
-        var frame = spriteFactory.getFrame("TutorialBg");
-        var capInsets = cc.rect(20, 20, 60, 60);
-        var bg = new ccui.Scale9Sprite(frame, capInsets);
-        bg.setAnchorPoint(0.5, 1);
-        bg.setContentSize(BG_MIN_WIDTH, height);
-        return bg;
-    }
-
     return {
         init: init,
         processSwipe: processSwipe,
@@ -301,7 +189,7 @@ lowfat.TutorialNew = function (spriteFactory, getBoard, removeAllBlockModelsAndV
     }
 };
 
-lowfat.TutorialPopup = function (container, descriptionText, headerText, screenSizeInPoints) {
+lowfat.TutorialPopup = function (container, descriptionText, headerText, screenWidth) {
     var node;
     var hasHeader = headerText !== undefined && headerText !== null && headerText !== "";
     var headerLabel = null;
@@ -312,15 +200,21 @@ lowfat.TutorialPopup = function (container, descriptionText, headerText, screenS
     init();
 
     function init() {
+        console.log(hasHeader);
         node = new cc.Node();
         container.addChild(node);
-        node.setPosition(screenSizeInPoints.width / 2, screenSizeInPoints.height / 2);
+        node.setPosition(screenWidth / 2, 360);
 
         if (hasHeader) {
-            headerLabel = createLabel("Привет!", 42, 0, cc.VERTICAL_TEXT_ALIGNMENT_BOTTOM);
+            // headerLabel = createLabel("Привет!", 42, 0, cc.VERTICAL_TEXT_ALIGNMENT_BOTTOM);
+            headerLabel = createLabel(headerText, 42, 0, cc.VERTICAL_TEXT_ALIGNMENT_BOTTOM);
+            descriptionLabel = createLabel(descriptionText, 24, 1, cc.VERTICAL_TEXT_ALIGNMENT_TOP);
             headerLabel.setOpacity(0);
+        } else {
+            descriptionLabel = createLabel(descriptionText, 24, 1, cc.VERTICAL_TEXT_ALIGNMENT_CENTER);
         }
-        descriptionLabel = createLabel("Давай играть во Fuse\nСобирай три и больше\nблоков одного цвета", 24, 1, cc.VERTICAL_TEXT_ALIGNMENT_TOP);
+        
+        // descriptionLabel = createLabel("Давай играть во Fuse\nСобирай три и больше\nблоков одного цвета", 24, 1, cc.VERTICAL_TEXT_ALIGNMENT_TOP);
         descriptionLabel.setOpacity(0);
     }
 
@@ -339,7 +233,7 @@ lowfat.TutorialPopup = function (container, descriptionText, headerText, screenS
     }
 
     function slowlyShowWithHeader() {
-        headerLabel.setPositionY(50);
+        headerLabel.setPositionY(LABEL_MOVE_DISTANCE);
         var headerFadeInAction = new cc.FadeIn(ANIMATION_DURATION);
         var headerMoveInAction = new cc.MoveBy(ANIMATION_DURATION, 0, -LABEL_MOVE_DISTANCE).easing(cc.easeCubicActionOut());
         var headerSpawnAction = new cc.Spawn(headerMoveInAction, headerFadeInAction);
@@ -417,8 +311,8 @@ lowfat.TutorialPopup = function (container, descriptionText, headerText, screenS
         }
     }
 
-    function onResize(screenSize) {
-        node.setPosition(screenSize.width / 2, screenSize.height / 2);
+    function onResize(screenWidthInPoints) {
+        node.setPositionX(screenWidthInPoints / 2);
     }
 
     return {
