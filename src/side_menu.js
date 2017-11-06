@@ -195,6 +195,7 @@ lowfat.SideMenu = function(containerParam, spriteFactory, soundManager, processR
         button.setAnchorPoint(0, 0);
         button.setPosition(0, 720 - y - (btnHeightExcludingSeparator + separatorHeight));
         button.addTouchEventListener(onTriggeredEvent, this);
+        button.setCascadeOpacityEnabled(true);
 
         var label = new cc.LabelTTF(
             labelText,
@@ -238,6 +239,11 @@ lowfat.SideMenu = function(containerParam, spriteFactory, soundManager, processR
         openMenuButton.setVisible(value);
     }
 
+    function setRestartAvailable (value) {
+        retryButton.setTouchEnabled(value);
+        retryButton.setOpacity(value ? 255 : 128);
+    }
+
     function onResize (winSizeWidth) {
         overlay.setContentSize(winSizeWidth, 720);
     }
@@ -245,6 +251,7 @@ lowfat.SideMenu = function(containerParam, spriteFactory, soundManager, processR
     return {
         init: init,
         processClickAndGetIfAllowed: processClickAndGetIfAllowed,
+        setRestartAvailable: setRestartAvailable,
         setMenuAvailable: setMenuAvailable,
         onResize: onResize
     }

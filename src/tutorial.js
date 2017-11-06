@@ -42,7 +42,7 @@ lowfat.TutorialNew = function (spriteFactory, getBoard, removeAllBlockModelsAndV
         setNextPack([2, 1]);
         setScore(0);
         getScoreUI().displayNewScoreInstantly(0);
-        getSideMenu().setMenuAvailable(false);
+        getSideMenu().setRestartAvailable(false);
         setMaxUnlockedValue(1);
     }
 
@@ -146,7 +146,7 @@ lowfat.TutorialNew = function (spriteFactory, getBoard, removeAllBlockModelsAndV
     }
 
     function tutorialFinished() {
-        getSideMenu().setMenuAvailable(true);
+        getSideMenu().setRestartAvailable(true);
         gameStateModel.setIsTutorialFinished(true);
     }
 
