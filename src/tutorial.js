@@ -1,12 +1,11 @@
 var lowfat = lowfat || {};
 
-lowfat.TutorialNew = function (spriteFactory, getBoard, removeAllBlockModelsAndViews, createBlockView, setCurrentPack, setNextPack, setScore, getScoreUI, getSideMenu, setMaxUnlockedValue, screenSizeInPoints) {
-    var screenSize = screenSizeInPoints;
+lowfat.TutorialNew = function (spriteFactory, getBoard, removeAllBlockModelsAndViews, createBlockView, setCurrentPack, setNextPack, setScore, getScoreUI, getSideMenu, setMaxUnlockedValue, screenWidthInPoints) {
+    var screenWidth = screenWidthInPoints;
     var container = null;
     var isMobile = false;
     var isActive = false;
     var gameStateModel = null;
-    var currentWidth = 0;
     var popups = [];
     var popupGameGoal = null;
     var popupSwipe = null;
@@ -29,8 +28,8 @@ lowfat.TutorialNew = function (spriteFactory, getBoard, removeAllBlockModelsAndV
         var introString = lowfat.LocalizationManager.getString("tutorial_goal");
         introString += "\n\n";
         introString += lowfat.LocalizationManager.getString(isMobile ? "tutorial_drop_mobile" : "tutorial_drop_pc");
-        popupGameGoal = createPopup(160, introString, lowfat.LocalizationManager.getString("tutorial_goal_header"));
-        popupGameGoal.setPositionY(360);
+        popupGameGoal = createPopup(introString);
+        popupGameGoal.setPositionY(330);
         popupGameGoal.fadeIn();
 
         getBoard().clear();
@@ -64,7 +63,7 @@ lowfat.TutorialNew = function (spriteFactory, getBoard, removeAllBlockModelsAndV
         if (dropFinished) {
             popupSwipe.fadeOut();
             if (popupSwap !== null) {
-                popupSwap.moveToY(710, 0.3);
+                popupSwap.moveToY(360, 0.3);
             }
 
             if (swapPerformed === true) {
@@ -82,7 +81,7 @@ lowfat.TutorialNew = function (spriteFactory, getBoard, removeAllBlockModelsAndV
 
         if (dropFinished) {
             popupSwap.fadeOut();
-            if ((isMobile && movePerformed) || (isMobile == false)) {
+            if ((isMobile && movePerformed) || (isMobile === false)) {
                 tutorialFinished();
             }
         }
@@ -91,7 +90,7 @@ lowfat.TutorialNew = function (spriteFactory, getBoard, removeAllBlockModelsAndV
     }
 
     function processDropFinished() {
-        if (isActive == false || dropFinished == true) {
+        if (isActive === false || dropFinished === true) {
             return;
         }
 
@@ -111,22 +110,22 @@ lowfat.TutorialNew = function (spriteFactory, getBoard, removeAllBlockModelsAndV
             var swipeString = lowfat.LocalizationManager.getString("tutorial_swipe");
             swapString = lowfat.LocalizationManager.getString("tutorial_swap_mobile");
 
-            if (popupsAmount == 2) {
-                popupSwipe = createPopup(70, swipeString);
-                popupSwap = createPopup(70, swapString);
-                popupSwipe.setPositionY(710);
-                popupSwap.setPositionY(630);
+            if (popupsAmount === 2) {
+                popupSwipe = createPopup(swipeString);
+                popupSwap = createPopup(swapString);
+                popupSwipe.setPositionY(360);
+                popupSwap.setPositionY(270);
                 popupSwipe.fadeIn();
                 popupSwap.fadeIn(0.2);
             }
-            else if (popupsAmount == 1) {
+            else if (popupsAmount === 1) {
                 if (!movePerformed) {
-                    popupSwipe = createPopup(70, swipeString);
-                    popupSwipe.setPositionY(710);
+                    popupSwipe = createPopup(swipeString);
+                    popupSwipe.setPositionY(360);
                     popupSwipe.fadeIn();
                 } else {
-                    popupSwap = createPopup(70, swapString);
-                    popupSwap.setPositionY(710);
+                    popupSwap = createPopup(swapString);
+                    popupSwap.setPositionY(360);
                     popupSwap.fadeIn();
                 }
             } else {
@@ -135,8 +134,8 @@ lowfat.TutorialNew = function (spriteFactory, getBoard, removeAllBlockModelsAndV
         } else {
             if (!swapPerformed) {
                 swapString = lowfat.LocalizationManager.getString("tutorial_swap_pc");
-                popupSwap = createPopup(90, swapString);
-                popupSwap.setPositionY(710);
+                popupSwap = createPopup(swapString);
+                popupSwap.setPositionY(360);
                 popupSwap.fadeIn();
             } else {
                 tutorialFinished();
@@ -152,29 +151,18 @@ lowfat.TutorialNew = function (spriteFactory, getBoard, removeAllBlockModelsAndV
     }
 
     function onResize(width) {
-        if (isActive == false) {
+        if (isActive === false) {
             return;
         }
-
-        currentWidth = width;
+        screenWidth = width;
 
         for (var i = 0; i < popups.length; i++) {
             popups[i].onResize(width);
         }
     }
 
-    var BG_MIN_WIDTH = 380;
-    var BG_MAX_WIDTH = 600;
-    var BG_MARGIN_X = 10;
-    var LABEL_MIN_WIDTH = 370;
-    var LABEL_MAX_WIDTH = 580;
-    var LABEL_MARGIN_X = 20;
-    var HEADER_WIDTH = 580;
-    var HEADER_HEIGHT = 50;
-    var HEADER_MARGIN_Y = -2;
-
-    function createPopup(popupHeight, hint, header) {
-        var popup = lowfat.TutorialPopup(container, hint, header, screenSize);
+    function createPopup(hint, header) {
+        var popup = lowfat.TutorialPopup(container, hint, header, screenWidth);
         popups.push(popup);
         return popup;
     }
@@ -200,7 +188,6 @@ lowfat.TutorialPopup = function (container, descriptionText, headerText, screenW
     init();
 
     function init() {
-        console.log(hasHeader);
         node = new cc.Node();
         container.addChild(node);
         node.setPosition(screenWidth / 2, 360);
@@ -210,7 +197,7 @@ lowfat.TutorialPopup = function (container, descriptionText, headerText, screenW
             descriptionLabel = createLabel(descriptionText, 24, 1, cc.VERTICAL_TEXT_ALIGNMENT_TOP);
             headerLabel.setOpacity(0);
         } else {
-            descriptionLabel = createLabel(descriptionText, 24, 1, cc.VERTICAL_TEXT_ALIGNMENT_CENTER);
+            descriptionLabel = createLabel(descriptionText, 24, 0.5, cc.VERTICAL_TEXT_ALIGNMENT_CENTER);
         }
         
         descriptionLabel.setOpacity(0);

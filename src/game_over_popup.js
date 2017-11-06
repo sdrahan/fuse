@@ -1,10 +1,10 @@
 var lowfat = lowfat || {};
 
-lowfat.GameOverPopup = function (spriteFactory, container, screenSizeInPoints, processNewGame, score) {
+lowfat.GameOverPopup = function (spriteFactory, container, screenSizeInPoints, processNewGame, getScoreUI, score) {
 
     var popupNode;
     var restartButton;
-
+    var facebookButton;
     var HIDDEN_Y = -174;
 
     function show() {
@@ -13,11 +13,13 @@ lowfat.GameOverPopup = function (spriteFactory, container, screenSizeInPoints, p
         container.addChild(popupNode);
         var bg = spriteFactory.getSprite("PopupGameOver");
         popupNode.addChild(bg);
-        restartButton = createButton("PopupButtonRestart", 0, -108, newGameButtonTouchEvent);
+        facebookButton = createButton("PopupButtonFacebook", 0, -53, facebookButtonTouchEvent);
+        restartButton = createButton("PopupButtonRestartGreen", 0, -125, newGameButtonTouchEvent);
         popupNode.addChild(restartButton);
+        popupNode.addChild(facebookButton);
 
         var headerLabel = new cc.LabelTTF(
-            "GAME OVER",
+            lowfat.LocalizationManager.getString("popup_game_over"),
             "Open Sans",
             38,
             cc.size(400, 50),
@@ -28,14 +30,14 @@ lowfat.GameOverPopup = function (spriteFactory, container, screenSizeInPoints, p
         popupNode.addChild(headerLabel);
 
         var scoreLabel = new cc.LabelTTF(
-            score,
+            getFormattedScore(),
             "Open Sans",
             52,
-            cc.size(240, 50),
+            cc.size(300, 50),
             cc.TEXT_ALIGNMENT_CENTER,
             cc.VERTICAL_TEXT_ALIGNMENT_CENTER);
         scoreLabel.setColor(cc.color(49, 63, 160));
-        scoreLabel.setPosition(0, 10);
+        scoreLabel.setPosition(0, 35);
         popupNode.addChild(scoreLabel);
 
         var moveInAction = cc.moveTo(0.7, screenSizeInPoints.width / 2, screenSizeInPoints.height / 2).easing(cc.easeBackOut());
@@ -58,9 +60,20 @@ lowfat.GameOverPopup = function (spriteFactory, container, screenSizeInPoints, p
         }
     }
 
+    function facebookButtonTouchEvent(sender, type) {
+        if (type === ccui.Widget.TOUCH_ENDED) {
+
+        }
+    }
+
     function onNewGameButton() {
         slowlyHide();
+        getScoreUI().displayNewScoreInstantly(0);
         getScoreUI().slowlyShow();
+    }
+
+    function onFacebookButton() {
+
     }
 
     function slowlyHide() {
@@ -74,7 +87,28 @@ lowfat.GameOverPopup = function (spriteFactory, container, screenSizeInPoints, p
         processNewGame();
     }
 
+    function getFormattedScore() {
+        var scoreString = score + "";
+        var scoreLength = scoreString.length;
+        var result = "";
+
+        for (var i = 0; i < scoreLength; i++) {
+            if (i > 0 && (scoreLength - i) % 3 === 0)
+            {
+                result += ".";
+            }
+            result += scoreString[i];
+        }
+
+        return result;
+    }
+
+    function onResize() {
+
+    }
+
     return {
-        show: show
+        show: show,
+        onResize: onResize
     }
 };

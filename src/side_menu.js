@@ -47,11 +47,11 @@ lowfat.SideMenu = function(containerParam, spriteFactory, soundManager, processR
         openMenuButton.setVisible(true);
         closeMenuButton.setVisible(false);
 
-        retryButton = createSideMenuButton("Btn_Restart_SideMenu", "Restart", 0, retryButtonTouchEvent);
-        soundOnButton = createSideMenuButton("Btn_Sound_On_SideMenu", "Sound", 62, soundButtonTouchEvent);
-        soundOffButton = createSideMenuButton("Btn_Sound_Off_SideMenu", "Sound", 62, soundButtonTouchEvent);
-        musicOnButton = createSideMenuButton("Btn_Music_On_SideMenu", "Music", 124, musicButtonTouchEvent);
-        musicOffButton = createSideMenuButton("Btn_Music_Off_SideMenu", "Music", 124, musicButtonTouchEvent);
+        retryButton = createSideMenuButton("Btn_Restart_SideMenu", lowfat.LocalizationManager.getString("sidemenu_restart"), 0, retryButtonTouchEvent);
+        soundOnButton = createSideMenuButton("Btn_Sound_On_SideMenu",  lowfat.LocalizationManager.getString("sidemenu_sound"), 62, soundButtonTouchEvent);
+        soundOffButton = createSideMenuButton("Btn_Sound_Off_SideMenu", lowfat.LocalizationManager.getString("sidemenu_sound"), 62, soundButtonTouchEvent);
+        musicOnButton = createSideMenuButton("Btn_Music_On_SideMenu", lowfat.LocalizationManager.getString("sidemenu_music"), 124, musicButtonTouchEvent);
+        musicOffButton = createSideMenuButton("Btn_Music_Off_SideMenu", lowfat.LocalizationManager.getString("sidemenu_music"), 124, musicButtonTouchEvent);
 
         updateSoundButtons();
         updateMusicButtons();
@@ -199,17 +199,17 @@ lowfat.SideMenu = function(containerParam, spriteFactory, soundManager, processR
         var label = new cc.LabelTTF(
             labelText,
             "Open Sans",
-            22,
+            28,
             cc.size(200, btnHeightExcludingSeparator),
             cc.TEXT_ALIGNMENT_LEFT,
             cc.VERTICAL_TEXT_ALIGNMENT_CENTER);
         label.setFontFillColor(cc.color(123, 32, 163));
         label.setAnchorPoint(0, 0.5);
-        label.setPosition(70, btnHeightExcludingSeparator / 2 + separatorHeight);
+        label.setPosition(75, btnHeightExcludingSeparator / 2 + separatorHeight);
         button.addChild(label);
 
         var icon = spriteFactory.getSprite(iconSpriteName, 0.5, 0.5);
-        icon.setPosition(30, btnHeightExcludingSeparator / 2 + separatorHeight);
+        icon.setPosition(35, btnHeightExcludingSeparator / 2 + separatorHeight);
         button.addChild(icon);
         layer.addChild(button);
         return button;
