@@ -555,44 +555,6 @@
 				<key>textureRotated</key>
 				<false/>
 			</dict>
-			<key>Btn_Music_Off0000</key>
-			<dict>
-				<key>aliases</key>
-				<array/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{54,54}}</string>
-				<key>spriteOffset</key>
-				<string>{0,0}</string>
-				<key>spriteSize</key>
-				<string>{54,54}</string>
-				<key>spriteSourceSize</key>
-				<string>{54,54}</string>
-				<key>spriteTrimmed</key>
-				<false/>
-				<key>textureRect</key>
-				<string>{{846,596},{54,54}}</string>
-				<key>textureRotated</key>
-				<false/>
-			</dict>
-			<key>Btn_Music_Off_Over0000</key>
-			<dict>
-				<key>aliases</key>
-				<array/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{54,54}}</string>
-				<key>spriteOffset</key>
-				<string>{0,0}</string>
-				<key>spriteSize</key>
-				<string>{54,54}</string>
-				<key>spriteSourceSize</key>
-				<string>{54,54}</string>
-				<key>spriteTrimmed</key>
-				<false/>
-				<key>textureRect</key>
-				<string>{{940,918},{54,54}}</string>
-				<key>textureRotated</key>
-				<false/>
-			</dict>
 			<key>Btn_Music_Off_SideMenu0000</key>
 			<dict>
 				<key>aliases</key>
@@ -608,45 +570,7 @@
 				<key>spriteTrimmed</key>
 				<false/>
 				<key>textureRect</key>
-				<string>{{954,862},{54,54}}</string>
-				<key>textureRotated</key>
-				<false/>
-			</dict>
-			<key>Btn_Music_On0000</key>
-			<dict>
-				<key>aliases</key>
-				<array/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{54,54}}</string>
-				<key>spriteOffset</key>
-				<string>{0,0}</string>
-				<key>spriteSize</key>
-				<string>{54,54}</string>
-				<key>spriteSourceSize</key>
-				<string>{54,54}</string>
-				<key>spriteTrimmed</key>
-				<false/>
-				<key>textureRect</key>
-				<string>{{954,806},{54,54}}</string>
-				<key>textureRotated</key>
-				<false/>
-			</dict>
-			<key>Btn_Music_On_Over0000</key>
-			<dict>
-				<key>aliases</key>
-				<array/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{54,54}}</string>
-				<key>spriteOffset</key>
-				<string>{0,0}</string>
-				<key>spriteSize</key>
-				<string>{54,54}</string>
-				<key>spriteSourceSize</key>
-				<string>{54,54}</string>
-				<key>spriteTrimmed</key>
-				<false/>
-				<key>textureRect</key>
-				<string>{{958,646},{54,54}}</string>
+				<string>{{902,646},{54,54}}</string>
 				<key>textureRotated</key>
 				<false/>
 			</dict>
@@ -665,7 +589,7 @@
 				<key>spriteTrimmed</key>
 				<false/>
 				<key>textureRect</key>
-				<string>{{772,868},{54,54}}</string>
+				<string>{{958,646},{54,54}}</string>
 				<key>textureRotated</key>
 				<false/>
 			</dict>
@@ -707,44 +631,6 @@
 				<key>textureRotated</key>
 				<false/>
 			</dict>
-			<key>Btn_Restart0000</key>
-			<dict>
-				<key>aliases</key>
-				<array/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{54,54}}</string>
-				<key>spriteOffset</key>
-				<string>{0,0}</string>
-				<key>spriteSize</key>
-				<string>{54,54}</string>
-				<key>spriteSourceSize</key>
-				<string>{54,54}</string>
-				<key>spriteTrimmed</key>
-				<false/>
-				<key>textureRect</key>
-				<string>{{884,924},{54,54}}</string>
-				<key>textureRotated</key>
-				<false/>
-			</dict>
-			<key>Btn_Restart_Over0000</key>
-			<dict>
-				<key>aliases</key>
-				<array/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{54,54}}</string>
-				<key>spriteOffset</key>
-				<string>{0,0}</string>
-				<key>spriteSize</key>
-				<string>{54,54}</string>
-				<key>spriteSourceSize</key>
-				<string>{54,54}</string>
-				<key>spriteTrimmed</key>
-				<false/>
-				<key>textureRect</key>
-				<string>{{828,868},{54,54}}</string>
-				<key>textureRotated</key>
-				<false/>
-			</dict>
 			<key>Btn_Restart_SideMenu0000</key>
 			<dict>
 				<key>aliases</key>
@@ -760,7 +646,7 @@
 				<key>spriteTrimmed</key>
 				<false/>
 				<key>textureRect</key>
-				<string>{{846,652},{54,54}}</string>
+				<string>{{846,596},{54,54}}</string>
 				<key>textureRotated</key>
 				<false/>
 			</dict>
@@ -802,44 +688,6 @@
 				<key>textureRotated</key>
 				<false/>
 			</dict>
-			<key>Btn_Sound_Off0000</key>
-			<dict>
-				<key>aliases</key>
-				<array/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{54,54}}</string>
-				<key>spriteOffset</key>
-				<string>{0,0}</string>
-				<key>spriteSize</key>
-				<string>{54,54}</string>
-				<key>spriteSourceSize</key>
-				<string>{54,54}</string>
-				<key>spriteTrimmed</key>
-				<false/>
-				<key>textureRect</key>
-				<string>{{884,868},{54,54}}</string>
-				<key>textureRotated</key>
-				<false/>
-			</dict>
-			<key>Btn_Sound_Off_Over0000</key>
-			<dict>
-				<key>aliases</key>
-				<array/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{54,54}}</string>
-				<key>spriteOffset</key>
-				<string>{0,0}</string>
-				<key>spriteSize</key>
-				<string>{54,54}</string>
-				<key>spriteSourceSize</key>
-				<string>{54,54}</string>
-				<key>spriteTrimmed</key>
-				<false/>
-				<key>textureRect</key>
-				<string>{{772,924},{54,54}}</string>
-				<key>textureRotated</key>
-				<false/>
-			</dict>
 			<key>Btn_Sound_Off_SideMenu0000</key>
 			<dict>
 				<key>aliases</key>
@@ -855,45 +703,7 @@
 				<key>spriteTrimmed</key>
 				<false/>
 				<key>textureRect</key>
-				<string>{{828,924},{54,54}}</string>
-				<key>textureRotated</key>
-				<false/>
-			</dict>
-			<key>Btn_Sound_On0000</key>
-			<dict>
-				<key>aliases</key>
-				<array/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{54,54}}</string>
-				<key>spriteOffset</key>
-				<string>{0,0}</string>
-				<key>spriteSize</key>
-				<string>{54,54}</string>
-				<key>spriteSourceSize</key>
-				<string>{54,54}</string>
-				<key>spriteTrimmed</key>
-				<false/>
-				<key>textureRect</key>
-				<string>{{940,974},{54,54}}</string>
-				<key>textureRotated</key>
-				<false/>
-			</dict>
-			<key>Btn_Sound_On_Over0000</key>
-			<dict>
-				<key>aliases</key>
-				<array/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{54,54}}</string>
-				<key>spriteOffset</key>
-				<string>{0,0}</string>
-				<key>spriteSize</key>
-				<string>{54,54}</string>
-				<key>spriteSourceSize</key>
-				<string>{54,54}</string>
-				<key>spriteTrimmed</key>
-				<false/>
-				<key>textureRect</key>
-				<string>{{902,646},{54,54}}</string>
+				<string>{{846,652},{54,54}}</string>
 				<key>textureRotated</key>
 				<false/>
 			</dict>
@@ -912,7 +722,7 @@
 				<key>spriteTrimmed</key>
 				<false/>
 				<key>textureRect</key>
-				<string>{{772,980},{54,54}}</string>
+				<string>{{954,806},{54,54}}</string>
 				<key>textureRotated</key>
 				<false/>
 			</dict>
