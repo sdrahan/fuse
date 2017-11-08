@@ -206,7 +206,7 @@ lowfat.TutorialPopup = function (container, descriptionText, headerText, screenW
     function createLabel(text, fontSize, anchorPointY, textAlignment) {
         var label = new cc.LabelTTF(
             text,
-            "Open Sans",
+            "OpenSansRegular",
             fontSize,
             cc.size(360, 340),
             cc.TEXT_ALIGNMENT_CENTER,

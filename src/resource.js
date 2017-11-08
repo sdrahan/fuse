@@ -14,7 +14,12 @@ var res = {
     sound_match_5: "res/match_5.mp3",
     sound_swap: "res/swap.mp3",
     sound_drop: "res/drop.mp3",
-    localization_json: "res/localization.json"
+    localization_json: "res/localization.json",
+    font: {
+        type: "font",
+        name: "OpenSansRegular",
+        srcs: ["res/opensans-regular.eot", "res/opensans-regular.ttf"]
+    }
 };
 
 var g_resources = [];

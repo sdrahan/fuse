@@ -245,7 +245,7 @@ lowfat.SideMenu = function(containerParam, spriteFactory, soundManager, processR
 
         var label = new cc.LabelTTF(
             labelText,
-            "Open Sans",
+            "OpenSansRegular",
             28,
             cc.size(200, btnHeightExcludingSeparator),
             cc.TEXT_ALIGNMENT_LEFT,

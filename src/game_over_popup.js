@@ -17,10 +17,12 @@ lowfat.GameOverPopup = function (spriteFactory, container, screenSizeInPoints, p
         restartButton = createButton("PopupButtonRestartGreen", 0, -125, newGameButtonTouchEvent);
         popupNode.addChild(restartButton);
         popupNode.addChild(facebookButton);
+        restartButton.setTouchEnabled(false);
+        facebookButton.setTouchEnabled(false);
 
         var headerLabel = new cc.LabelTTF(
             lowfat.LocalizationManager.getString("popup_game_over"),
-            "Open Sans",
+            "OpenSansRegular",
             38,
             cc.size(400, 50),
             cc.TEXT_ALIGNMENT_CENTER,
@@ -31,7 +33,7 @@ lowfat.GameOverPopup = function (spriteFactory, container, screenSizeInPoints, p
 
         var scoreLabel = new cc.LabelTTF(
             getFormattedScore(),
-            "Open Sans",
+            "OpenSansRegular",
             52,
             cc.size(300, 50),
             cc.TEXT_ALIGNMENT_CENTER,
@@ -41,7 +43,13 @@ lowfat.GameOverPopup = function (spriteFactory, container, screenSizeInPoints, p
         popupNode.addChild(scoreLabel);
 
         var moveInAction = cc.moveTo(0.7, screenSizeInPoints.width / 2, screenSizeInPoints.height / 2).easing(cc.easeBackOut());
-        popupNode.runAction(moveInAction);
+        var callFuncAction = new cc.CallFunc(showFinished);
+        popupNode.runAction(new cc.Sequence(moveInAction, callFuncAction));
+    }
+
+    function showFinished() {
+        restartButton.setTouchEnabled(true);
+        facebookButton.setTouchEnabled(true);
     }
 
     function createButton(buttonSkin, x, y, onTriggeredEvent) {
@@ -78,6 +86,7 @@ lowfat.GameOverPopup = function (spriteFactory, container, screenSizeInPoints, p
 
     function slowlyHide() {
         restartButton.setTouchEnabled(false);
+        facebookButton.setTouchEnabled(false);
         var moveOutAction = cc.moveTo(0.7, screenSizeInPoints.width / 2, HIDDEN_Y).easing(cc.easeBackIn());
         var callFuncAction = new cc.CallFunc(hideFinished);
         popupNode.runAction(new cc.Sequence(moveOutAction, callFuncAction));
@@ -85,6 +94,7 @@ lowfat.GameOverPopup = function (spriteFactory, container, screenSizeInPoints, p
 
     function hideFinished() {
         processNewGame();
+        popupNode.removeFromParent();
     }
 
     function getFormattedScore() {
@@ -104,7 +114,7 @@ lowfat.GameOverPopup = function (spriteFactory, container, screenSizeInPoints, p
     }
 
     function onResize() {
-
+        popupNode.removeFromParent();
     }
 
     return {
