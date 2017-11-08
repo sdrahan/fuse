@@ -21,10 +21,13 @@ lowfat.Background = function (spriteFactory, container, initialScreenSize) {
     }
 
     function fadeSideSpritesIn() {
+        var delay = 0.6;
+        var leftSpriteDelay = new cc.DelayTime(delay);
         var leftSpriteMoveAction = new cc.MoveTo(1.5, 0, 0).easing(cc.easeCubicActionOut());
+        var rightSpriteDelay = new cc.DelayTime(delay);
         var rightSpriteMoveAction = new cc.MoveTo(1.5, screenSizeInPoints.width, 0).easing(cc.easeCubicActionOut());
-        bgLeftSprite.runAction(leftSpriteMoveAction);
-        bgRightSprite.runAction(rightSpriteMoveAction);
+        bgLeftSprite.runAction(new cc.Sequence(leftSpriteDelay, leftSpriteMoveAction));
+        bgRightSprite.runAction(new cc.Sequence(rightSpriteDelay, rightSpriteMoveAction));
     }
 
     function onResize(screenSize) {
