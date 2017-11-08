@@ -37,7 +37,6 @@ lowfat.Gamefield = function (scene, spriteFactory, gameStateModel, soundManager,
     var score = 0;
     var hintUI = null;
     var controlSchemes = null;
-    var ingameUI = null;
     var sideMenu = null;
     var floatingScore = null;
     var grid = null;
@@ -80,8 +79,6 @@ lowfat.Gamefield = function (scene, spriteFactory, gameStateModel, soundManager,
         scoreUI.init();
         hintUI = lowfat.HintUI(fgContainer, spriteFactory);
         hintUI.init(MAX_VALUE);
-        ingameUI = new lowfat.IngameUI(spriteFactory, getScoreUI, processNewGame);
-        ingameUI.init(uiContainer);
         floatingScore = lowfat.FloatingScore(uiContainer, fgContainer);
         sideMenu = lowfat.SideMenu(uiContainer, spriteFactory, soundManager, processRestartDuringGame);
         sideMenu.init();
@@ -763,7 +760,6 @@ lowfat.Gamefield = function (scene, spriteFactory, gameStateModel, soundManager,
         screenSizeInPoints = screenSize;
         var boardViewWidth = COLS * BLOCK_SPRITE_WIDTH + LEFT_MARGIN * 2;
         fgContainer.setPositionX((screenSizeInPoints.width - boardViewWidth) / 2);
-        ingameUI.onResize(screenSizeInPoints.width);
         sideMenu.onResize(screenSizeInPoints.width);
         flashEffect.onResize(screenSizeInPoints.width, screenSizeInPoints.height);
         tutorial.onResize(screenSizeInPoints.width);
@@ -838,10 +834,6 @@ lowfat.Gamefield = function (scene, spriteFactory, gameStateModel, soundManager,
 
     function getScoreUI() {
         return scoreUI;
-    }
-
-    function getIngameUI() {
-        return ingameUI;
     }
 
     function getBoard() {

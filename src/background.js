@@ -9,15 +9,30 @@ lowfat.Background = function (spriteFactory, container, initialScreenSize) {
     function init() {
         bgGradient = new cc.LayerGradient(cc.color(89, 35, 113), cc.color(33, 25, 87));
         container.addChild(bgGradient);
+        addFullsizeSprites();
+        // addSmallSprites();
+        fadeSideSpritesIn();
+    }
+
+    function addFullsizeSprites() {
         bgLeftSprite = spriteFactory.getSprite("BgLeft", 0, 0);
         container.addChild(bgLeftSprite);
         bgRightSprite = spriteFactory.getSprite("BgRight", 1, 0);
         container.addChild(bgRightSprite);
-
         bgLeftSprite.setPositionX(-bgLeftSprite.getContentSize().width);
         bgRightSprite.setPositionX(screenSizeInPoints.width + bgRightSprite.getContentSize().width);
+    }
 
-        fadeSideSpritesIn();
+    function addSmallSprites() {
+        bgLeftSprite = spriteFactory.getSprite("BgLeftSmall", 0, 0);
+        bgLeftSprite.setScale(2, 2);
+        container.addChild(bgLeftSprite);
+        bgRightSprite = spriteFactory.getSprite("BgRightSmall", 1, 0);
+        bgRightSprite.setScale(2, 2);
+        container.addChild(bgRightSprite);
+
+        bgLeftSprite.setPositionX(-bgLeftSprite.getContentSize().width);
+        bgRightSprite.setPositionX(screenSizeInPoints.width + bgRightSprite.getContentSize().width * 2);
     }
 
     function fadeSideSpritesIn() {

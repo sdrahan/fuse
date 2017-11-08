@@ -21,7 +21,6 @@
         "src/side_menu.js",
         "src/sound_manager.js",
         "src/game_over_popup.js",
-        "src/tutorial.js",
-        "src/ui.js"
+        "src/tutorial.js"
     ]
 }
