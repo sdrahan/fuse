@@ -47,30 +47,63 @@ lowfat.SideMenu = function(containerParam, spriteFactory, soundManager, processR
         openMenuButton.setVisible(true);
         closeMenuButton.setVisible(false);
 
-        retryButton = createSideMenuButton("Btn_Restart_SideMenu", lowfat.LocalizationManager.getString("sidemenu_restart"), 0, retryButtonTouchEvent);
-        soundOnButton = createSideMenuButton("Btn_Sound_On_SideMenu",  lowfat.LocalizationManager.getString("sidemenu_sound"), 62, soundButtonTouchEvent);
-        soundOffButton = createSideMenuButton("Btn_Sound_Off_SideMenu", lowfat.LocalizationManager.getString("sidemenu_sound"), 62, soundButtonTouchEvent);
-        musicOnButton = createSideMenuButton("Btn_Music_On_SideMenu", lowfat.LocalizationManager.getString("sidemenu_music"), 124, musicButtonTouchEvent);
-        musicOffButton = createSideMenuButton("Btn_Music_Off_SideMenu", lowfat.LocalizationManager.getString("sidemenu_music"), 124, musicButtonTouchEvent);
+        var logoHeight = 72;
+        var logoBg = spriteFactory.getSprite("SidemenuBtnBg", 0, 1);
+        layer.addChild(logoBg);
+        logoBg.setPosition(0, 720);
+        var logo = spriteFactory.getSprite("SidemenuLogo");
+        layer.addChild(logo);
+        logo.setPosition(160, 720 - 35);
+        addSeparator(70);
+        retryButton = createSideMenuButton("Btn_Restart_SideMenu", lowfat.LocalizationManager.getString("sidemenu_restart"), 0 + logoHeight, retryButtonTouchEvent);
+        addSeparator(142);
+        soundOnButton = createSideMenuButton("Btn_Sound_On_SideMenu",  lowfat.LocalizationManager.getString("sidemenu_sound"), 74 + logoHeight, soundButtonTouchEvent);
+        soundOffButton = createSideMenuButton("Btn_Sound_Off_SideMenu", lowfat.LocalizationManager.getString("sidemenu_sound"), 74 + logoHeight, soundButtonTouchEvent);
+        musicOnButton = createSideMenuButton("Btn_Music_On_SideMenu", lowfat.LocalizationManager.getString("sidemenu_music"), 144 + logoHeight, musicButtonTouchEvent);
+        musicOffButton = createSideMenuButton("Btn_Music_Off_SideMenu", lowfat.LocalizationManager.getString("sidemenu_music"), 144 + logoHeight, musicButtonTouchEvent);
+        addSeparator(282);
+
 
         updateSoundButtons();
         updateMusicButtons();
     }
 
     function retryButtonTouchEvent (sender, type) {
-        if (type == ccui.Widget.TOUCH_ENDED) {
+        if (type === ccui.Widget.TOUCH_BEGAN) {
+            highlightButton(retryButton);
+        } else if (type === ccui.Widget.TOUCH_ENDED || type === ccui.Widget.TOUCH_CANCELED) {
+            unhighlightButton(retryButton);
+        }
+
+        if (type === ccui.Widget.TOUCH_ENDED) {
             onRetryButton();
         }
     }
 
     function soundButtonTouchEvent (sender, type) {
-        if (type == ccui.Widget.TOUCH_ENDED) {
+        if (type === ccui.Widget.TOUCH_BEGAN) {
+            highlightButton(soundOffButton);
+            highlightButton(soundOnButton);
+        } else if (type === ccui.Widget.TOUCH_ENDED || type === ccui.Widget.TOUCH_CANCELED) {
+            unhighlightButton(soundOffButton);
+            unhighlightButton(soundOnButton);
+        }
+
+        if (type === ccui.Widget.TOUCH_ENDED) {
             onSoundButton();
         }
     }
 
     function musicButtonTouchEvent (sender, type) {
-        if (type == ccui.Widget.TOUCH_ENDED) {
+        if (type === ccui.Widget.TOUCH_BEGAN) {
+            highlightButton(musicOffButton);
+            highlightButton(musicOnButton);
+        } else if (type === ccui.Widget.TOUCH_ENDED || type === ccui.Widget.TOUCH_CANCELED) {
+            unhighlightButton(musicOffButton);
+            unhighlightButton(musicOnButton);
+        }
+
+        if (type === ccui.Widget.TOUCH_ENDED) {
             onMusicButton();
         }
     }
@@ -87,6 +120,14 @@ lowfat.SideMenu = function(containerParam, spriteFactory, soundManager, processR
     function onMusicButton () {
         soundManager.toggleMusicOn();
         updateMusicButtons();
+    }
+
+    function highlightButton(button) {
+        button.customHighlightedBg.setVisible(true);
+    }
+
+    function unhighlightButton(button) {
+        button.customHighlightedBg.setVisible(false);
     }
 
     function updateSoundButtons () {
@@ -185,8 +226,8 @@ lowfat.SideMenu = function(containerParam, spriteFactory, soundManager, processR
     }
 
     function createSideMenuButton (iconSpriteName, labelText, y, onTriggeredEvent) {
-        var btnHeightExcludingSeparator = 60;
-        var separatorHeight = 2;
+        var btnHeightExcludingSeparator = 70;
+        var separatorHeight = 0;
 
         var button = new ccui.Button();
         var iconFrameName = spriteFactory.getMCTextureName("SidemenuBtnBg");
@@ -197,6 +238,11 @@ lowfat.SideMenu = function(containerParam, spriteFactory, soundManager, processR
         button.addTouchEventListener(onTriggeredEvent, this);
         button.setCascadeOpacityEnabled(true);
 
+        var highlightedBg = spriteFactory.getSprite("SidemenuBtnBgDown", 0, 0);
+        button.addChild(highlightedBg);
+        highlightedBg.setVisible(false);
+        button.customHighlightedBg = highlightedBg;
+
         var label = new cc.LabelTTF(
             labelText,
             "Open Sans",
@@ -206,14 +252,22 @@ lowfat.SideMenu = function(containerParam, spriteFactory, soundManager, processR
             cc.VERTICAL_TEXT_ALIGNMENT_CENTER);
         label.setFontFillColor(cc.color(123, 32, 163));
         label.setAnchorPoint(0, 0.5);
-        label.setPosition(75, btnHeightExcludingSeparator / 2 + separatorHeight);
+        label.setPosition(75, btnHeightExcludingSeparator / 2 + separatorHeight + 1);
         button.addChild(label);
+        button.customLabel = label;
 
         var icon = spriteFactory.getSprite(iconSpriteName, 0.5, 0.5);
         icon.setPosition(35, btnHeightExcludingSeparator / 2 + separatorHeight);
         button.addChild(icon);
+        button.customIcon = icon;
         layer.addChild(button);
         return button;
+    }
+
+    function addSeparator(y) {
+        var separator = spriteFactory.getSprite("SidemenuSeparator", 0, 1);
+        separator.setPosition(0, 720 - y);
+        layer.addChild(separator);
     }
 
     function processClickAndGetIfAllowed (eventX, eventY) {
