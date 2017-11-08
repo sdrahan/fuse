@@ -1,13 +1,13 @@
 var lowfat = lowfat || {};
 
-lowfat.SideMenu = function(containerParam, spriteFactory, soundManager, processRestartDuringGame) {
+lowfat.SideMenu = function (containerParam, spriteFactory, soundManager, processRestartDuringGame) {
     var container = null;
     var layer = null;
     var bg = null;
     var isOpen = false;
     var overlay = null;
     var isClosing = false;
-    
+
     var soundOnButton = null;
     var soundOffButton = null;
     var musicOnButton = null;
@@ -15,7 +15,7 @@ lowfat.SideMenu = function(containerParam, spriteFactory, soundManager, processR
     var retryButton = null;
     var openMenuButton = null;
     var closeMenuButton = null;
-    
+
     var BG_TILE_HEIGHT = 72;
     var WIN_HEIGHT = 720;
     var TWEEN_DURATION = 0.3;
@@ -23,7 +23,7 @@ lowfat.SideMenu = function(containerParam, spriteFactory, soundManager, processR
     var MENU_BTN_HALF_SIZE = 30;
     var MENU_WIDTH = 320;
 
-    function init () {
+    function init() {
         container = containerParam;
 
         overlay = new cc.LayerColor(cc.color(0, 0, 0, 50));
@@ -57,18 +57,16 @@ lowfat.SideMenu = function(containerParam, spriteFactory, soundManager, processR
         addSeparator(70);
         retryButton = createSideMenuButton("Btn_Restart_SideMenu", lowfat.LocalizationManager.getString("sidemenu_restart"), 0 + logoHeight, retryButtonTouchEvent);
         addSeparator(142);
-        soundOnButton = createSideMenuButton("Btn_Sound_On_SideMenu",  lowfat.LocalizationManager.getString("sidemenu_sound"), 74 + logoHeight, soundButtonTouchEvent);
+        soundOnButton = createSideMenuButton("Btn_Sound_On_SideMenu", lowfat.LocalizationManager.getString("sidemenu_sound"), 74 + logoHeight, soundButtonTouchEvent);
         soundOffButton = createSideMenuButton("Btn_Sound_Off_SideMenu", lowfat.LocalizationManager.getString("sidemenu_sound"), 74 + logoHeight, soundButtonTouchEvent);
         musicOnButton = createSideMenuButton("Btn_Music_On_SideMenu", lowfat.LocalizationManager.getString("sidemenu_music"), 144 + logoHeight, musicButtonTouchEvent);
         musicOffButton = createSideMenuButton("Btn_Music_Off_SideMenu", lowfat.LocalizationManager.getString("sidemenu_music"), 144 + logoHeight, musicButtonTouchEvent);
-        addSeparator(282);
+        addSeparator(286);
 
-
-        updateSoundButtons();
-        updateMusicButtons();
+        hideAllButtons();
     }
 
-    function retryButtonTouchEvent (sender, type) {
+    function retryButtonTouchEvent(sender, type) {
         if (type === ccui.Widget.TOUCH_BEGAN) {
             highlightButton(retryButton);
         } else if (type === ccui.Widget.TOUCH_ENDED || type === ccui.Widget.TOUCH_CANCELED) {
@@ -80,7 +78,7 @@ lowfat.SideMenu = function(containerParam, spriteFactory, soundManager, processR
         }
     }
 
-    function soundButtonTouchEvent (sender, type) {
+    function soundButtonTouchEvent(sender, type) {
         if (type === ccui.Widget.TOUCH_BEGAN) {
             highlightButton(soundOffButton);
             highlightButton(soundOnButton);
@@ -94,7 +92,7 @@ lowfat.SideMenu = function(containerParam, spriteFactory, soundManager, processR
         }
     }
 
-    function musicButtonTouchEvent (sender, type) {
+    function musicButtonTouchEvent(sender, type) {
         if (type === ccui.Widget.TOUCH_BEGAN) {
             highlightButton(musicOffButton);
             highlightButton(musicOnButton);
@@ -108,16 +106,16 @@ lowfat.SideMenu = function(containerParam, spriteFactory, soundManager, processR
         }
     }
 
-    function onRetryButton () {
+    function onRetryButton() {
         processRestartDuringGame();
     }
 
-    function onSoundButton () {
+    function onSoundButton() {
         soundManager.toggleSoundOn();
         updateSoundButtons();
     }
 
-    function onMusicButton () {
+    function onMusicButton() {
         soundManager.toggleMusicOn();
         updateMusicButtons();
     }
@@ -130,45 +128,45 @@ lowfat.SideMenu = function(containerParam, spriteFactory, soundManager, processR
         button.customHighlightedBg.setVisible(false);
     }
 
-    function updateSoundButtons () {
+    function updateSoundButtons() {
         soundOnButton.setVisible(soundManager.getSoundOn());
         soundOffButton.setVisible(!soundManager.getSoundOn());
         addProperSoundListener();
     }
 
-    function addProperSoundListener () {
+    function addProperSoundListener() {
         soundOnButton.setTouchEnabled(soundManager.getSoundOn());
         soundOffButton.setTouchEnabled(!soundManager.getSoundOn());
     }
 
-    function updateMusicButtons () {
+    function updateMusicButtons() {
         musicOnButton.setVisible(soundManager.getMusicOn());
         musicOffButton.setVisible(!soundManager.getMusicOn());
         addProperMusicListener();
     }
 
-    function addProperMusicListener () {
+    function addProperMusicListener() {
         musicOnButton.setTouchEnabled(soundManager.getMusicOn());
         musicOffButton.setTouchEnabled(!soundManager.getMusicOn());
     }
 
-    function openMenuButtonEvent (sender, type) {
+    function openMenuButtonEvent(sender, type) {
         if (type == ccui.Widget.TOUCH_ENDED) {
             onOpenMenuButton();
         }
     }
 
-    function closeMenuButtonEvent (sender, type) {
+    function closeMenuButtonEvent(sender, type) {
         if (type == ccui.Widget.TOUCH_ENDED) {
             onCloseMenuButton();
         }
     }
 
-    function onCloseMenuButton () {
+    function onCloseMenuButton() {
         closeMenu();
     }
 
-    function closeMenu () {
+    function closeMenu() {
         if (isClosing) {
             return;
         }
@@ -185,22 +183,24 @@ lowfat.SideMenu = function(containerParam, spriteFactory, soundManager, processR
         layer.runAction(new cc.Sequence(moveAction, callbackAction));
     }
 
-    function onCloseMenuFinished () {
+    function onCloseMenuFinished() {
         bg.setVisible(false);
         overlay.setVisible(false);
         openMenuButton.setTouchEnabled(true);
+        hideAllButtons();
         isClosing = false;
     }
 
-    function onOpenMenuButton () {
+    function onOpenMenuButton() {
         openMenu();
     }
 
-    function openMenu () {
+    function openMenu() {
         openMenuButton.setVisible(false);
         closeMenuButton.setVisible(true);
         closeMenuButton.setTouchEnabled(false);
         isOpen = true;
+        showAllButtons();
 
         bg.setVisible(true);
         layer.stopAllActions();
@@ -210,11 +210,25 @@ lowfat.SideMenu = function(containerParam, spriteFactory, soundManager, processR
         overlay.setVisible(true);
     }
 
-    function onOpenMenuFinished () {
+    function onOpenMenuFinished() {
         closeMenuButton.setTouchEnabled(true);
     }
 
-    function createButton (outSkin, overSkin, x, y, onTriggeredEvent) {
+    function hideAllButtons() {
+        retryButton.setVisible(false);
+        soundOffButton.setVisible(false);
+        soundOnButton.setVisible(false);
+        musicOffButton.setVisible(false);
+        musicOnButton.setVisible(false);
+    }
+
+    function showAllButtons() {
+        retryButton.setVisible(true);
+        updateMusicButtons();
+        updateSoundButtons();
+    }
+
+    function createButton(outSkin, overSkin, x, y, onTriggeredEvent) {
         var button = new ccui.Button();
         var outSkinTextureName = spriteFactory.getMCTextureName(outSkin);
         var overSkinTextureName = spriteFactory.getMCTextureName(overSkin);
@@ -225,7 +239,7 @@ lowfat.SideMenu = function(containerParam, spriteFactory, soundManager, processR
         return button;
     }
 
-    function createSideMenuButton (iconSpriteName, labelText, y, onTriggeredEvent) {
+    function createSideMenuButton(iconSpriteName, labelText, y, onTriggeredEvent) {
         var btnHeightExcludingSeparator = 70;
         var separatorHeight = 0;
 
@@ -270,12 +284,12 @@ lowfat.SideMenu = function(containerParam, spriteFactory, soundManager, processR
         layer.addChild(separator);
     }
 
-    function processClickAndGetIfAllowed (eventX, eventY) {
+    function processClickAndGetIfAllowed(eventX, eventY) {
         if (isOpen == false) {
             if (eventY >= (MENU_BTN_COORDS.y - MENU_BTN_HALF_SIZE)) {
                 if (eventX >= openMenuButton.getPositionX() - MENU_WIDTH - MENU_BTN_HALF_SIZE && eventX <= openMenuButton.getPositionX() - MENU_WIDTH + MENU_BTN_HALF_SIZE)
                     return false;
-                }
+            }
             return true;
         }
 
@@ -286,19 +300,19 @@ lowfat.SideMenu = function(containerParam, spriteFactory, soundManager, processR
         return false;
     }
 
-    function setMenuAvailable (value) {
+    function setMenuAvailable(value) {
         if (isOpen) {
             closeMenu();
         }
         openMenuButton.setVisible(value);
     }
 
-    function setRestartAvailable (value) {
+    function setRestartAvailable(value) {
         retryButton.setTouchEnabled(value);
         retryButton.setOpacity(value ? 255 : 128);
     }
 
-    function onResize (winSizeWidth) {
+    function onResize(winSizeWidth) {
         overlay.setContentSize(winSizeWidth, 720);
     }
 
