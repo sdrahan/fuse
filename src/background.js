@@ -38,7 +38,6 @@ lowfat.Background = function (spriteFactory, container, initialScreenSize) {
 
     return {
         init: init,
-        fadeSideSpritesIn: fadeSideSpritesIn,
         onResize: onResize
     }
 };
