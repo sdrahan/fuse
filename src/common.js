@@ -81,3 +81,14 @@ lowfat.LocalizationManager = {
         }
     }
 };
+
+lowfat.AnalyticsManager = {
+    analyticsSystems: [],
+
+    init: function () {
+
+    },
+    sendEvent: function(eventName, eventValue) {
+
+    }
+};
