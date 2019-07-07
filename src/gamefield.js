@@ -1,6 +1,6 @@
 var lowfat = lowfat || {};
 
-lowfat.Gamefield = function (scene, spriteFactory, gameStateModel, soundManager, screenSize) {
+lowfat.Gamefield = function (scene, spriteFactory, gameStateModel, soundManager, screenSize, analyticsManager) {
     var container = scene;
     var screenSizeInPoints = screenSize;
 
@@ -42,6 +42,7 @@ lowfat.Gamefield = function (scene, spriteFactory, gameStateModel, soundManager,
     var grid = null;
     var flashEffect = null;
     var tutorial = null;
+    var fuseTracking = null;
 
     function start() {
         setup();
@@ -54,6 +55,7 @@ lowfat.Gamefield = function (scene, spriteFactory, gameStateModel, soundManager,
         initControls();
         initFromGameState();
         initTutorial();
+        initTracking();
         createNewPack();
         onResize(screenSizeInPoints);
     }
@@ -128,10 +130,14 @@ lowfat.Gamefield = function (scene, spriteFactory, gameStateModel, soundManager,
     }
 
     function initTutorial() {
-        tutorial = lowfat.TutorialNew(spriteFactory, getBoard, removeAllBlockModelsAndViews, createBlockView, setCurrentPack, setNextPack, setScore, getScoreUI, getSideMenu, setMaxUnlockedValue, screenSizeInPoints.width);
+        tutorial = lowfat.TutorialNew(spriteFactory, getBoard, removeAllBlockModelsAndViews, createBlockView, setCurrentPack, setNextPack, setScore, getScoreUI, getSideMenu, setMaxUnlockedValue, screenSizeInPoints.width, fuseTracking);
         if (gameStateModel.getIsTutorialFinished() == false || gameStateModel.getIsFirstGame()) {
             tutorial.init(uiContainer, cc.sys.isMobile, gameStateModel);
         }
+    }
+
+    function initTracking() {
+        fuseTracking = lowfat.FuseTracking(analyticsManager);
     }
 
     function createNewPack() {
@@ -425,6 +431,7 @@ lowfat.Gamefield = function (scene, spriteFactory, gameStateModel, soundManager,
         }
 
         callFunctionAfterDelay(biggestTime, dropPackFinished, this);
+        fuseTracking.processDrop();
     }
 
     function preDropActions() {
@@ -603,6 +610,7 @@ lowfat.Gamefield = function (scene, spriteFactory, gameStateModel, soundManager,
         removeTopBlocks();
         saveGameLostGameState();
         showLostAnimation(onRestartAnimationFinished);
+        fuseTracking.processRestartDuringGame();
     }
 
     function processGameLost() {
@@ -613,12 +621,14 @@ lowfat.Gamefield = function (scene, spriteFactory, gameStateModel, soundManager,
         saveGameLostGameState();
         removeTopBlocks();
         showLostAnimation(onLostAnimationFinished);
+        fuseTracking.processGameLost();
     }
 
     function processNewGame() {
         grid.runAction(new cc.FadeIn(0.1));
         sideMenu.setMenuAvailable(true);
-        scoreUI.slowlyShow()
+        scoreUI.slowlyShow();
+        fuseTracking.processRestartAfterGameEnd();
         restart();
     }
 
@@ -1915,5 +1925,40 @@ lowfat.BoardAppearAnimation = function (spriteFactory, bigGridSprite, container,
 
     return {
         show:show
+    }
+};
+
+lowfat.FuseTracking = function (analyticsManager) {
+    var firstDropMade = false;
+
+    function processDrop() {
+        if (!firstDropMade) {
+            firstDropMade = true;
+            analyticsManager.sendEvent(lowfat.analyticsEvents.CATEGORY_GENERAL, lowfat.analyticsEvents.FIRST_DROP_MADE);
+        }
+    }
+
+    function processRestartDuringGame() {
+        analyticsManager.sendEvent(lowfat.analyticsEvents.CATEGORY_GENERAL, lowfat.analyticsEvents.RESTART_DURING_GAME);
+    }
+
+    function processRestartAfterGameEnd() {
+        analyticsManager.sendEvent(lowfat.analyticsEvents.CATEGORY_GENERAL, lowfat.analyticsEvents.RESTART_AFTER_GAME_END);
+    }
+
+    function processGameLost() {
+        analyticsManager.sendEvent(lowfat.analyticsEvents.CATEGORY_GENERAL, lowfat.analyticsEvents.GAME_LOST);
+    }
+
+    function processTutorialFinished() {
+        analyticsManager.sendEvent(lowfat.analyticsEvents.CATEGORY_TUTORIAL, lowfat.analyticsEvents.TUTORIAL_FINISHED);
+    }
+
+    return {
+        processDrop: processDrop,
+        processRestartDuringGame: processRestartDuringGame,
+        processRestartAfterGameEnd: processRestartAfterGameEnd,
+        processGameLost: processGameLost,
+        processTutorialFinished: processTutorialFinished
     }
 };

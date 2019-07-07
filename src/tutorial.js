@@ -1,6 +1,6 @@
 var lowfat = lowfat || {};
 
-lowfat.TutorialNew = function (spriteFactory, getBoard, removeAllBlockModelsAndViews, createBlockView, setCurrentPack, setNextPack, setScore, getScoreUI, getSideMenu, setMaxUnlockedValue, screenWidthInPoints) {
+lowfat.TutorialNew = function (spriteFactory, getBoard, removeAllBlockModelsAndViews, createBlockView, setCurrentPack, setNextPack, setScore, getScoreUI, getSideMenu, setMaxUnlockedValue, screenWidthInPoints, fuseTracker) {
     var screenWidth = screenWidthInPoints;
     var container = null;
     var isMobile = false;
@@ -148,6 +148,7 @@ lowfat.TutorialNew = function (spriteFactory, getBoard, removeAllBlockModelsAndV
     function tutorialFinished() {
         getSideMenu().setRestartAvailable(true);
         gameStateModel.setIsTutorialFinished(true);
+        fuseTracker.processTutorialFinished();
     }
 
     function onResize(width) {
