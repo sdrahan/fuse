@@ -12,6 +12,7 @@ var GameScene = cc.Scene.extend({
         this.gameStateModel = lowfat.GameStateModel(this.soundManager);
         this.gameStateModel.init(this);
         this.analyticsManager = lowfat.AnalyticsManager;
+        this.analyticsManager.init();
         this.background = lowfat.Background(lowfat.SpriteFactory, this, cc.director.getWinSize());
         this.background.init();
         this.startBoard();
@@ -21,7 +22,7 @@ var GameScene = cc.Scene.extend({
     },
 
     startBoard: function () {
-        this.gamefield = new lowfat.Gamefield(this, lowfat.SpriteFactory, this.gameStateModel, this.soundManager, cc.director.getWinSize());
+        this.gamefield = new lowfat.Gamefield(this, lowfat.SpriteFactory, this.gameStateModel, this.soundManager, cc.director.getWinSize(), this.analyticsManager);
         this.gamefield.start();
     },
 

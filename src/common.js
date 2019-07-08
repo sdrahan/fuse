@@ -82,17 +82,20 @@ lowfat.LocalizationManager = {
     }
 };
 
-lowfat.GameAnalyticsModule = {
-    sendEvent: function (eventCategory, eventName, eventValue, eventOutcome) {
+lowfat.TrackingGameAnalytics = function() {
+    function sendEvent(eventCategory, eventName, eventValue, eventOutcome) {
         let eventToSend = eventCategory + ":" + eventName + ((typeof eventOutcome !== "undefined") ? (":" + eventOutcome) : "");
         console.log("Game Analytics Sending " + eventToSend + ": " + eventValue);
 
         GameAnalytics("addDesignEvent", eventToSend, eventValue);
     }
+    return {
+        sendEvent: sendEvent
+    }
 };
 
-lowfat.GoogleAnalyticsModule = {
-    sendEvent: function (eventCategory, eventName, eventValue, eventOutcome) {
+lowfat.TrackingGoogleAnalytics = function() {
+    function sendEvent (eventCategory, eventName, eventValue, eventOutcome) {
         console.log("Google Analytics Sending " + eventName + ": " + eventValue);
 
         gtag('event', eventName, {
@@ -101,14 +104,20 @@ lowfat.GoogleAnalyticsModule = {
             'value': eventValue
         });
     }
+
+    return {
+        sendEvent: sendEvent
+    }
 };
 
 lowfat.AnalyticsManager = {
-    analyticsSystems: [lowfat.GoogleAnalyticsModule, lowfat.GameAnalyticsModule],
+    analyticsSystems: [],
 
     init: function () {
-
+        this.analyticsSystems.push(lowfat.TrackingGameAnalytics());
+        this.analyticsSystems.push(lowfat.TrackingGoogleAnalytics());
     },
+
     sendEvent: function (eventCategory, eventName, eventValue, eventOutcome) {
         for (let i = 0; i < this.analyticsSystems.length; i++) {
             this.analyticsSystems[i].sendEvent(eventCategory, eventName, eventValue, eventOutcome);
