@@ -45,8 +45,8 @@ cc.LoaderScene = cc.Scene.extend({
         var self = this;
 
         //logo
-        var logoWidth = 120;
-        var logoHeight = 46;
+        var logoWidth = 344;
+        var logoHeight = 292;
 
         // bg
         var bgLayer = self._bgLayer = new cc.LayerColor(cc.color(0, 0, 0, 255));

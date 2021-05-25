@@ -4,7 +4,6 @@ lowfat.GameOverPopup = function (spriteFactory, container, screenSizeInPoints, p
 
     var popupNode;
     var restartButton;
-    var facebookButton;
     var HIDDEN_Y = -174;
 
     function show() {
@@ -13,12 +12,9 @@ lowfat.GameOverPopup = function (spriteFactory, container, screenSizeInPoints, p
         container.addChild(popupNode);
         var bg = spriteFactory.getSprite("PopupGameOver");
         popupNode.addChild(bg);
-        facebookButton = createButton("PopupButtonFacebook", 0, -53, facebookButtonTouchEvent);
         restartButton = createButton("PopupButtonRestartGreen", 0, -125, newGameButtonTouchEvent);
         popupNode.addChild(restartButton);
-        popupNode.addChild(facebookButton);
         restartButton.setTouchEnabled(false);
-        facebookButton.setTouchEnabled(false);
 
         var headerLabel = new cc.LabelTTF(
             lowfat.LocalizationManager.getString("popup_game_over"),
@@ -49,7 +45,6 @@ lowfat.GameOverPopup = function (spriteFactory, container, screenSizeInPoints, p
 
     function showFinished() {
         restartButton.setTouchEnabled(true);
-        facebookButton.setTouchEnabled(true);
     }
 
     function createButton(buttonSkin, x, y, onTriggeredEvent) {
@@ -68,25 +63,14 @@ lowfat.GameOverPopup = function (spriteFactory, container, screenSizeInPoints, p
         }
     }
 
-    function facebookButtonTouchEvent(sender, type) {
-        if (type === ccui.Widget.TOUCH_ENDED) {
-
-        }
-    }
-
     function onNewGameButton() {
         slowlyHide();
         getScoreUI().displayNewScoreInstantly(0);
         getScoreUI().slowlyShow();
     }
 
-    function onFacebookButton() {
-
-    }
-
     function slowlyHide() {
         restartButton.setTouchEnabled(false);
-        facebookButton.setTouchEnabled(false);
         var moveOutAction = cc.moveTo(0.7, screenSizeInPoints.width / 2, HIDDEN_Y).easing(cc.easeBackIn());
         var callFuncAction = new cc.CallFunc(hideFinished);
         popupNode.runAction(new cc.Sequence(moveOutAction, callFuncAction));

@@ -82,46 +82,15 @@ lowfat.LocalizationManager = {
     }
 };
 
-lowfat.TrackingGameAnalytics = function() {
-    function sendEvent(eventCategory, eventName, eventValue, eventOutcome) {
-        let eventToSend = eventCategory + ":" + eventName + ((typeof eventOutcome !== "undefined") ? (":" + eventOutcome) : "");
-        console.log("Game Analytics Sending " + eventToSend + ": " + eventValue);
-
-        GameAnalytics("addDesignEvent", eventToSend, eventValue);
-    }
-    return {
-        sendEvent: sendEvent
-    }
-};
-
-lowfat.TrackingGoogleAnalytics = function() {
-    function sendEvent (eventCategory, eventName, eventValue, eventOutcome) {
-        console.log("Google Analytics Sending " + eventName + ": " + eventValue);
-
-        gtag('event', eventName, {
-            'event_category': eventCategory,
-            'event_label': eventOutcome,
-            'value': eventValue
-        });
-    }
-
-    return {
-        sendEvent: sendEvent
-    }
-};
-
 lowfat.AnalyticsManager = {
     analyticsSystems: [],
 
     init: function () {
-        this.analyticsSystems.push(lowfat.TrackingGameAnalytics());
-        this.analyticsSystems.push(lowfat.TrackingGoogleAnalytics());
+
     },
 
     sendEvent: function (eventCategory, eventName, eventValue, eventOutcome) {
-        for (let i = 0; i < this.analyticsSystems.length; i++) {
-            this.analyticsSystems[i].sendEvent(eventCategory, eventName, eventValue, eventOutcome);
-        }
+
     }
 };
 
@@ -136,4 +105,31 @@ lowfat.analyticsEvents = {
 
     CATEGORY_TUTORIAL: "tutorial",
     TUTORIAL_FINISHED: "tutorialFinished"
+};
+
+lowfat.SponsorAPIManager = {
+    startGameAlreadySent: false,
+
+    sendReplayEvent: function () {
+        try {
+            parent.cmgGameEvent("replay");
+        }
+        catch (e) {
+            cc.warn("Can't send replay event");
+        }
+    },
+
+    sendStartGameEvent: function () {
+        if (this.startGameAlreadySent == true) {
+            return;
+        }
+
+        try {
+            this.startGameAlreadySent = true;
+            parent.cmgGameEvent("start");
+        }
+        catch (e) {
+            cc.warn("Can't send start event");
+        }
+    }
 };

@@ -1,6 +1,6 @@
 var lowfat = lowfat || {};
 
-lowfat.Gamefield = function (scene, spriteFactory, gameStateModel, soundManager, screenSize, analyticsManager) {
+lowfat.Gamefield = function (scene, spriteFactory, gameStateModel, soundManager, screenSize, analyticsManager, sponsorAPIManager) {
     var container = scene;
     var screenSizeInPoints = screenSize;
 
@@ -54,8 +54,8 @@ lowfat.Gamefield = function (scene, spriteFactory, gameStateModel, soundManager,
         initBoard();
         initControls();
         initFromGameState();
-        initTutorial();
         initTracking();
+        initTutorial();
         createNewPack();
         onResize(screenSizeInPoints);
     }
@@ -294,6 +294,7 @@ lowfat.Gamefield = function (scene, spriteFactory, gameStateModel, soundManager,
         updateBlockPreviews();
         soundManager.playMusic();
         tutorial.processSwipe();
+        lowfat.SponsorAPIManager.sendStartGameEvent();
     }
 
     function movePackRight() {
@@ -318,6 +319,7 @@ lowfat.Gamefield = function (scene, spriteFactory, gameStateModel, soundManager,
         updateBlockPreviews();
         soundManager.playMusic();
         tutorial.processSwipe();
+        lowfat.SponsorAPIManager.sendStartGameEvent();
     }
 
     function swapPack() {
@@ -439,6 +441,7 @@ lowfat.Gamefield = function (scene, spriteFactory, gameStateModel, soundManager,
 
         soundManager.playDropSound();
         soundManager.playMusic();
+        lowfat.SponsorAPIManager.sendStartGameEvent();
 
         if (topBlocks[0].block.y > topBlocks[1].block.y) {
             topBlocks.push(topBlocks[0]);
@@ -611,6 +614,7 @@ lowfat.Gamefield = function (scene, spriteFactory, gameStateModel, soundManager,
         saveGameLostGameState();
         showLostAnimation(onRestartAnimationFinished);
         fuseTracking.processRestartDuringGame();
+        lowfat.SponsorAPIManager.sendReplayEvent();
     }
 
     function processGameLost() {
@@ -629,6 +633,7 @@ lowfat.Gamefield = function (scene, spriteFactory, gameStateModel, soundManager,
         sideMenu.setMenuAvailable(true);
         scoreUI.slowlyShow();
         fuseTracking.processRestartAfterGameEnd();
+        lowfat.SponsorAPIManager.sendReplayEvent();
         restart();
     }
 
