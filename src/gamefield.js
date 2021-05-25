@@ -523,7 +523,7 @@ lowfat.Gamefield = function (scene, spriteFactory, gameStateModel, soundManager,
 
         if (merge.chain[0].value == MAX_VALUE) {
             maxUnlockedValue = 1;
-            hintUI.slowlyHide(1);
+            hintUI.slowlyHideOnThreeBlackBlocks();
         }
     }
 
@@ -1465,6 +1465,11 @@ lowfat.HintUI = function (container, spriteFactory) {
         }
     }
 
+    function slowlyHideOnThreeBlackBlocks() {
+        slowlyHide(1);
+        lastUnlockedValue = 1;
+    }
+
     function slowlyHideLockedIcons() {
         var maxDelay = 0.5;
         var duration = 0.2;
@@ -1514,6 +1519,7 @@ lowfat.HintUI = function (container, spriteFactory) {
         init: init,
         show: show,
         slowlyHide: slowlyHide,
+        slowlyHideOnThreeBlackBlocks: slowlyHideOnThreeBlackBlocks,
         reset: reset
     }
 };
