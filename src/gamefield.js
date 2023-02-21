@@ -944,10 +944,10 @@ lowfat.GameBoard = function (boardWidth, boardHeight, maxValue, onNoMatchesFound
     }
 
     function processChains(chains) {
-        checkForBlackChain(chains);
+        var filteredChains = checkForBlackChain(chains);
         var merges = [];
-        for (var i = 0; i < chains.length; i++) {
-            merges.push(processChain(chains[i]));
+        for (var i = 0; i < filteredChains.length; i++) {
+            merges.push(processChain(filteredChains[i]));
         }
         processChainMergesWithDelay(merges);
         // it consists of:
