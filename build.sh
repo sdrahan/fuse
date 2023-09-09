@@ -8,7 +8,7 @@ if [ -z $1 ]; then
 else
 	ACTION=$1
 fi
-
+ 
 if [ -z $2 ]; then
 	TARGET="test"
 	echo "No target provided, using default: $TARGET"
